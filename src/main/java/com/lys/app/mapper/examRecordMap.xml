@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lys.app.dao.ExamRecordDao">
+
+
+	<update id="createTable">
+        create table if not exists t_exam_record(
+            exam_record_id varchar(48),
+            exam_record_student_name text,
+            exam_record_paper_id varchar(48),
+            exam_record_select_time int default 0,
+            exam_record_gap_time int default 0,
+            exam_record_answer_time int default 0,
+            exam_record_mindset int default 0,
+            exam_record_note text,
+            exam_record_topics text,
+            exam_record_note_type text,
+            exam_record_note_point text,
+            exam_record_note_difficulty text,
+            exam_record_note_error_type text,
+            exam_record_note_offer text,
+            exam_record_note_all text,
+            exam_record_ts timestamp)
+    </update>
+
+
+	<resultMap id="examRecordResultMap" type="sExamRecord">
+		<id property="id" column="exam_record_id"/>
+		<result property="studentName" column="exam_record_student_name"/>
+		<result property="paperId" column="exam_record_paper_id"/>
+		<result property="selectTime" column="exam_record_select_time"/>
+		<result property="gapTime" column="exam_record_gap_time"/>
+		<result property="answerTime" column="exam_record_answer_time"/>
+		<result property="mindset" column="exam_record_mindset"/>
+		<result property="note" column="exam_record_note"/>
+		<result property="topics" column="exam_record_topics" typeHandler="com.lys.app.typehandler.ListSExamRecordTopicTypeHandler"/>
+		<result property="noteType" column="exam_record_note_type"/>
+		<result property="notePoint" column="exam_record_note_point"/>
+		<result property="noteDifficulty" column="exam_record_note_difficulty"/>
+		<result property="noteErrorType" column="exam_record_note_error_type"/>
+		<result property="noteOffer" column="exam_record_note_offer"/>
+		<result property="noteAll" column="exam_record_note_all"/>
+		<association property="paper" javaType="sExamPaper">
+			<id property="id" column="exam_paper_id"/>
+			<result property="name" column="exam_paper_name"/>
+			<result property="time" column="exam_paper_time"/>
+			<result property="files" column="exam_paper_files" typeHandler="com.lys.app.typehandler.ListStringTypeHandler"/>
+			<result property="note" column="exam_paper_note"/>
+			<result property="topics" column="exam_paper_topics" typeHandler="com.lys.app.typehandler.ListSExamPaperTopicTypeHandler"/>
+		</association>
+	</resultMap>
+
+
+	<select id="get" resultMap="examRecordResultMap">
+        select * from t_exam_record
+        left join t_exam_paper on t_exam_record.exam_record_paper_id = t_exam_paper.exam_paper_id
+        where exam_record_id = #{id}
+    </select>
+
+
+	<select id="getList" resultMap="examRecordResultMap">
+        select * from t_exam_record
+        left join t_exam_paper on t_exam_record.exam_record_paper_id = t_exam_paper.exam_paper_id
+    </select>
+
+
+	<select id="getListByName" resultMap="examRecordResultMap">
+        select * from t_exam_record
+        left join t_exam_paper on t_exam_record.exam_record_paper_id = t_exam_paper.exam_paper_id
+        where exam_record_student_name = #{name}
+    </select>
+
+
+	<select id="getListByPaperId" resultMap="examRecordResultMap">
+        select * from t_exam_record
+        left join t_exam_paper on t_exam_record.exam_record_paper_id = t_exam_paper.exam_paper_id
+        where exam_record_paper_id = #{paperId}
+    </select>
+
+
+	<select id="search" resultMap="examRecordResultMap">
+		select * from t_exam_record
+		left join t_exam_paper on t_exam_record.exam_record_paper_id = t_exam_paper.exam_paper_id
+		<where>
+			<if test="keywords !=null and keywords.size() > 0">
+				and
+				<foreach item="keyword" collection="keywords" open="(" separator="or" close=")">
+					exam_record_student_name like concat('', #{keyword}, '')
+				</foreach>
+			</if>
+		</where>
+		limit #{offset}, #{rows}
+	</select>
+
+
+	<select id="searchCount" resultType="Integer">
+		select count(*) from t_exam_record
+		<where>
+			<if test="keywords !=null and keywords.size() > 0">
+				and
+				<foreach item="keyword" collection="keywords" open="(" separator="or" close=")">
+					exam_record_student_name like concat('', #{keyword}, '')
+				</foreach>
+			</if>
+		</where>
+	</select>
+
+
+	<insert id="insert">
+        insert into t_exam_record(
+            exam_record_id,
+            exam_record_student_name,
+            exam_record_paper_id,
+            exam_record_select_time,
+            exam_record_gap_time,
+            exam_record_answer_time,
+            exam_record_mindset,
+            exam_record_note,
+            exam_record_topics,
+            exam_record_note_type,
+            exam_record_note_point,
+            exam_record_note_difficulty,
+            exam_record_note_error_type,
+            exam_record_note_offer,
+            exam_record_note_all)
+        value(
+            #{id},
+            #{studentName},
+            #{paperId},
+            #{selectTime},
+            #{gapTime},
+            #{answerTime},
+            #{mindset},
+            #{note},
+            #{topics, typeHandler=com.lys.app.typehandler.ListSExamRecordTopicTypeHandler},
+            #{noteType},
+            #{notePoint},
+            #{noteDifficulty},
+            #{noteErrorType},
+            #{noteOffer},
+            #{noteAll})
+    </insert>
+
+
+	<update id="update">
+		update t_exam_record
+		<set>
+			exam_record_student_name=#{studentName},
+			exam_record_paper_id=#{paperId},
+			exam_record_select_time=#{selectTime},
+			exam_record_gap_time=#{gapTime},
+			exam_record_answer_time=#{answerTime},
+			exam_record_mindset=#{mindset},
+			exam_record_note=#{note},
+			exam_record_topics=#{topics, typeHandler=com.lys.app.typehandler.ListSExamRecordTopicTypeHandler},
+			exam_record_note_type=#{noteType},
+			exam_record_note_point=#{notePoint},
+			exam_record_note_difficulty=#{noteDifficulty},
+			exam_record_note_error_type=#{noteErrorType},
+			exam_record_note_offer=#{noteOffer},
+			exam_record_note_all=#{noteAll}
+		</set>
+		where exam_record_id = #{id}
+	</update>
+
+
+	<delete id="delete">
+		delete from t_exam_record where exam_record_id = #{id}
+	</delete>
+
+
+</mapper>

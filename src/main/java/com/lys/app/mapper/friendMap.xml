@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lys.app.dao.FriendDao">
+
+
+	<update id="createTable">
+        create table if not exists friend(
+            friend_user_id varchar(48),
+            friend_friend_id varchar(48),
+            friend_group varchar(100),
+            friend_ts timestamp)
+    </update>
+
+
+	<resultMap id="friendResultMap" type="sFriend">
+		<id property="userId" column="friend_user_id"/>
+		<id property="friendId" column="friend_friend_id"/>
+		<result property="group" column="friend_group"/>
+	</resultMap>
+
+
+	<select id="get" resultMap="friendResultMap">
+        select * from friend
+        where friend_user_id = #{userId} and friend_friend_id = #{friendId}
+    </select>
+
+
+	<resultMap id="userResultMap" type="sUser">
+		<result property="id" column="user_id"/>
+		<result property="userType" column="user_user_type"/>
+		<result property="psw" column="user_psw"/>
+		<result property="name" column="user_name"/>
+		<result property="head" column="user_head"/>
+		<result property="token" column="user_token"/>
+		<result property="sex" column="user_sex"/>
+		<result property="grade" column="user_grade"/>
+		<result property="vipLevel" column="user_vip_level"/>
+		<result property="vipTime" column="user_vip_time"/>
+		<result property="phone" column="user_phone"/>
+		<result property="score" column="user_score"/>
+		<result property="cpId" column="user_cp_id"/>
+		<result property="group" column="friend_group"/>
+	</resultMap>
+
+
+	<select id="getList" resultMap="userResultMap">
+        select * from friend
+        left join user on friend.friend_friend_id = user.user_id
+        where friend_user_id = #{userId}
+    </select>
+
+
+	<insert id="insert">
+        insert into friend(
+            friend_user_id,
+            friend_friend_id,
+            friend_group)
+        value(
+            #{userId},
+            #{friendId},
+            #{group})
+    </insert>
+
+
+	<update id="update">
+		update friend
+		<set>
+			friend_group=#{group}
+		</set>
+		where friend_user_id = #{userId} and friend_friend_id = #{friendId}
+	</update>
+
+
+	<delete id="delete">
+		delete from friend where friend_user_id = #{userId} and friend_friend_id = #{friendId}
+	</delete>
+
+
+	<delete id="deleteByUserId">
+		delete from friend where friend_user_id = #{userId}
+	</delete>
+
+
+	<delete id="deleteByFriendId">
+		delete from friend where friend_friend_id = #{friendId}
+	</delete>
+
+
+</mapper>

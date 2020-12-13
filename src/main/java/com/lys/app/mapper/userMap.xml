@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lys.app.dao.UserDao">
+
+
+	<update id="createTable">
+        create table if not exists user(
+            user_id varchar(48),
+            user_user_type int default 4,
+            user_use_rong int default 0,
+            user_psw varchar(200),
+            user_name varchar(200),
+            user_head varchar(256),
+            user_token varchar(256),
+            user_create_time bigint default 0,
+            user_sex int default 1,
+            user_grade int default 0,
+            user_vip_level int default 0,
+            user_vip_time bigint default 0,
+            user_phone varchar(30),
+            user_score int default 0,
+            user_cp_id text,
+            user_ts timestamp)
+    </update>
+
+
+	<resultMap id="userResultMap" type="sUser">
+		<id property="id" column="user_id"/>
+		<result property="userType" column="user_user_type"/>
+		<result property="useRong" column="user_use_rong"/>
+		<result property="psw" column="user_psw"/>
+		<result property="name" column="user_name"/>
+		<result property="head" column="user_head"/>
+		<result property="token" column="user_token"/>
+		<result property="createTime" column="user_create_time"/>
+		<result property="sex" column="user_sex"/>
+		<result property="grade" column="user_grade"/>
+		<result property="vipLevel" column="user_vip_level"/>
+		<result property="vipTime" column="user_vip_time"/>
+		<result property="phone" column="user_phone"/>
+		<result property="score" column="user_score"/>
+		<result property="cpId" column="user_cp_id"/>
+		<result property="ts" column="user_ts"/>
+	</resultMap>
+
+
+	<select id="getById" resultMap="userResultMap">
+        select * from user
+        where user_id = #{id}
+    </select>
+
+
+	<select id="getByPhone" resultMap="userResultMap">
+        select * from user
+        where user_phone = #{phone}
+    </select>
+
+
+	<select id="get" resultMap="userResultMap">
+        select * from user
+        where user_id = #{idOrPhone} or user_phone = #{idOrPhone}
+    </select>
+
+
+	<select id="getList" resultMap="userResultMap">
+        select * from user
+        where user_user_type = #{userType}
+    </select>
+
+
+	<select id="search" resultMap="userResultMap">
+		select * from user
+		<where>
+			<if test="userType !=null and userType != 0">
+				and user_user_type = #{userType}
+			</if>
+			<if test="hasPhone">
+				and user_phone != ''
+			</if>
+			<if test="beginTime !=null">
+				and user_create_time >= #{beginTime}
+			</if>
+			<if test="endTime !=null">
+				and user_create_time &lt; #{endTime}
+			</if>
+			<if test="keywords !=null and keywords.size() > 0">
+				and
+				<foreach item="keyword" collection="keywords" open="(" separator="or" close=")">
+					user_id like concat('%', #{keyword}, '%')
+					or user_name like concat('%', #{keyword}, '%')
+					or user_phone like concat('%', #{keyword}, '%')
+				</foreach>
+			</if>
+		</where>
+		order by user_create_time asc
+		limit #{offset}, #{rows}
+	</select>
+
+
+	<select id="searchCount" resultType="Integer">
+		select count(*) from user
+		<where>
+			<if test="userType !=null and userType != 0">
+				and user_user_type = #{userType}
+			</if>
+			<if test="hasPhone">
+				and user_phone != ''
+			</if>
+			<if test="beginTime !=null">
+				and user_create_time >= #{beginTime}
+			</if>
+			<if test="endTime !=null">
+				and user_create_time &lt; #{endTime}
+			</if>
+			<if test="keywords !=null and keywords.size() > 0">
+				and
+				<foreach item="keyword" collection="keywords" open="(" separator="or" close=")">
+					user_id like concat('%', #{keyword}, '%')
+					or user_name like concat('%', #{keyword}, '%')
+					or user_phone like concat('%', #{keyword}, '%')
+				</foreach>
+			</if>
+		</where>
+	</select>
+
+
+	<insert id="insert">
+        insert into user(
+            user_id,
+            user_user_type,
+            user_use_rong,
+            user_psw,
+            user_name,
+            user_head,
+            user_token,
+            user_create_time,
+            user_sex,
+            user_grade,
+            user_vip_level,
+            user_vip_time,
+            user_phone,
+            user_score,
+            user_cp_id)
+        value(
+            #{id},
+            #{userType},
+            #{useRong},
+            #{psw},
+            #{name},
+            #{head},
+            #{token},
+            #{createTime},
+            #{sex},
+            #{grade},
+            #{vipLevel},
+            #{vipTime},
+            #{phone},
+            #{score},
+            #{cpId})
+    </insert>
+
+
+	<update id="update">
+		update user
+		<set>
+			user_user_type=#{userType},
+			user_use_rong=#{useRong},
+			user_psw=#{psw},
+			user_name=#{name},
+			user_head=#{head},
+			user_token=#{token},
+			user_create_time=#{createTime},
+			user_sex=#{sex},
+			user_grade=#{grade},
+			user_vip_level=#{vipLevel},
+			user_vip_time=#{vipTime},
+			user_phone=#{phone},
+			user_score=#{score},
+			user_cp_id=#{cpId}
+		</set>
+		where user_id = #{id}
+	</update>
+
+
+	<delete id="delete">
+		delete from user where user_id = #{id}
+	</delete>
+
+
+</mapper>

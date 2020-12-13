@@ -1,0 +1,471 @@
+option java_package = "com.lys.protobuf";
+
+message Point
+{
+	optional float x = 1;
+	optional float y = 2;
+	optional float pressure = 3 [default=1];
+	optional int64 timestamp = 4;
+}
+
+message PointRadius
+{
+	optional Point point = 1;
+	optional float radius = 2;
+}
+
+// enum DrawingType
+// {
+// DrawingType_Stroke = 1;
+// DrawingType_Eraser = 2;
+// DrawingType_Circle = 3;
+// }
+
+message Drawing
+{
+	optional int32 drawingType = 1;
+
+	optional DrawingStroke stroke = 2; // 钢笔
+	optional DrawingStress stress = 3; // 钢笔2
+	optional DrawingBrush brush = 4; // 毛笔
+	optional DrawingEraser eraser = 5; // 橡皮擦
+
+	optional DrawingFullLine fullLine = 6; // 实线
+	optional DrawingImaginaryLine imaginaryLine = 7; // 虚线
+	optional DrawingArrowsLine arrowsLine = 8; // 箭头线
+
+	optional DrawingCoord coord = 9; // 坐标
+	optional DrawingMark mark = 10; // 记号笔
+	optional DrawingWater water = 11; // 水彩笔
+
+	optional DrawingCircle circle = 12; // 圆形
+	optional DrawingOval oval = 13; // 椭圆形
+	optional DrawingSquare square = 14; // 正方形
+	optional DrawingRectangle rectangle = 15; // 长方形
+	optional DrawingTriangle triangle = 16; // 三角形
+	optional DrawingIsosceles isosceles = 17; // 等腰三角形
+	optional DrawingRightAngled rightAngled = 18; // 直角三角形
+	optional DrawingEquilateralTriangle equilateralTriangle = 19; // 等边三角形
+	optional DrawingCone cone = 20; // 圆锥
+	optional DrawingCylinder cylinder = 21; // 圆柱
+	optional DrawingPyramid pyramid = 22; // 三棱锥
+
+	optional DrawingUdParabola udParabola = 23; // 二次函数
+	optional DrawingLrParabola lrParabola = 24; // 抛物线
+	optional DrawingSine sine = 25; // 正余弦曲线
+	optional DrawingTan tan = 26; // 正切曲线
+	optional DrawingHyperbola hyperbola = 27; // 双曲线
+	optional DrawingHyperbola2 hyperbola2 = 28; // 双曲线2
+	optional DrawingAnyFunc anyFunc = 29; // 任意函数
+	optional DrawingCube cube = 30; // 长方体
+	optional DrawingBall ball = 31; // 球
+}
+
+
+message FullArea
+{
+	repeated Point points = 1;
+}
+
+
+// 钢笔
+message DrawingStroke
+{
+	optional int32 paintColor = 1;
+	optional float strokeWidth = 2;
+	repeated Point points = 3;
+}
+
+// 钢笔2
+message DrawingStress
+{
+	optional int32 paintColor = 1;
+	optional float strokeWidth = 2;
+	repeated Point points = 3;
+}
+
+// 毛笔
+message DrawingBrush
+{
+	optional int32 paintColor = 1;
+	optional float strokeWidth = 2;
+	repeated Point points = 3;
+}
+
+// 橡皮擦
+message DrawingEraser
+{
+	repeated PointRadius points = 1;
+	repeated FullArea fullAreas = 2;
+}
+
+// 实线
+message DrawingFullLine
+{
+	optional int32 paintColor = 1;
+	optional float strokeWidth = 2;
+	optional Point posStart = 3;
+	optional Point posStop = 4;
+}
+
+// 虚线
+message DrawingImaginaryLine
+{
+	optional int32 paintColor = 1;
+	optional float strokeWidth = 2;
+	optional Point posStart = 3;
+	optional Point posStop = 4;
+}
+
+// 箭头线
+message DrawingArrowsLine
+{
+	optional int32 paintColor = 1;
+	optional float strokeWidth = 2;
+	optional Point posStart = 3;
+	optional Point posStop = 4;
+}
+
+// 坐标
+message DrawingCoord
+{
+	optional int32 paintColor = 1;
+	optional float strokeWidth = 2;
+	optional Point posStart = 3;
+	optional Point posStop = 4;
+}
+
+// 记号笔
+message DrawingMark
+{
+	optional int32 paintColor = 1;
+	optional float strokeWidth = 2;
+	repeated Point points = 3;
+}
+
+// 水彩笔
+message DrawingWater
+{
+	optional int32 paintColor = 1;
+	optional float strokeWidth = 2;
+	repeated Point points = 3;
+}
+
+// 圆形
+message DrawingCircle
+{
+	optional int32 paintColor = 1;
+	optional float strokeWidth = 2;
+	optional Point pos = 3;
+	optional float radius = 4;
+}
+
+// 椭圆形
+message DrawingOval
+{
+	optional int32 paintColor = 1;
+	optional float strokeWidth = 2;
+	optional Point posStart = 3;
+	optional Point posStop = 4;
+}
+
+// 正方形
+message DrawingSquare
+{
+	optional int32 paintColor = 1;
+	optional float strokeWidth = 2;
+	optional Point posStart = 3;
+	optional Point posStop = 4;
+}
+
+// 长方形
+message DrawingRectangle
+{
+	optional int32 paintColor = 1;
+	optional float strokeWidth = 2;
+	optional Point posStart = 3;
+	optional Point posStop = 4;
+}
+
+// 三角形
+message DrawingTriangle
+{
+	optional int32 paintColor = 1;
+	optional float strokeWidth = 2;
+	optional Point posStart = 3;
+	optional Point posStop = 4;
+}
+
+// 等腰三角形
+message DrawingIsosceles
+{
+	optional int32 paintColor = 1;
+	optional float strokeWidth = 2;
+	optional Point posStart = 3;
+	optional Point posStop = 4;
+}
+
+// 直角三角形
+message DrawingRightAngled
+{
+	optional int32 paintColor = 1;
+	optional float strokeWidth = 2;
+	optional Point posStart = 3;
+	optional Point posStop = 4;
+}
+
+// 等边三角形
+message DrawingEquilateralTriangle
+{
+	optional int32 paintColor = 1;
+	optional float strokeWidth = 2;
+	optional Point posStart = 3;
+	optional Point posStop = 4;
+}
+
+// 圆锥
+message DrawingCone
+{
+	optional int32 paintColor = 1;
+	optional float strokeWidth = 2;
+	optional Point posStart = 3;
+	optional Point posStop = 4;
+}
+
+// 圆柱
+message DrawingCylinder
+{
+	optional int32 paintColor = 1;
+	optional float strokeWidth = 2;
+	optional Point posStart = 3;
+	optional Point posStop = 4;
+}
+
+// 三棱锥
+message DrawingPyramid
+{
+	optional int32 paintColor = 1;
+	optional float strokeWidth = 2;
+	optional Point posStart = 3;
+	optional Point posStop = 4;
+}
+
+// 二次函数
+message DrawingUdParabola
+{
+	optional int32 paintColor = 1;
+	optional float strokeWidth = 2;
+	optional Point posStart = 3;
+	optional Point posStop = 4;
+}
+
+// 抛物线
+message DrawingLrParabola
+{
+	optional int32 paintColor = 1;
+	optional float strokeWidth = 2;
+	optional Point posStart = 3;
+	optional Point posStop = 4;
+}
+
+// 正余弦曲线
+message DrawingSine
+{
+	optional int32 paintColor = 1;
+	optional float strokeWidth = 2;
+	optional Point posStart = 3;
+	optional Point posStop = 4;
+}
+
+// 正切曲线
+message DrawingTan
+{
+	optional int32 paintColor = 1;
+	optional float strokeWidth = 2;
+	optional Point posStart = 3;
+	optional Point posStop = 4;
+}
+
+// 双曲线
+message DrawingHyperbola
+{
+	optional int32 paintColor = 1;
+	optional float strokeWidth = 2;
+	optional Point posStart = 3;
+	optional Point posStop = 4;
+}
+
+// 双曲线2
+message DrawingHyperbola2
+{
+	optional int32 paintColor = 1;
+	optional float strokeWidth = 2;
+	optional Point posStart = 3;
+	optional Point posStop = 4;
+}
+
+// 任意函数
+message DrawingAnyFunc
+{
+	optional int32 paintColor = 1;
+	optional float strokeWidth = 2;
+	optional Point posStart = 3;
+	optional Point posStop = 4;
+	optional string formula = 5;
+	optional string conditionFrom = 6;
+	optional string conditionTo = 7;
+	optional bool containFrom = 8;
+	optional bool containTo = 9;
+	optional float scaleX = 10;
+	optional float scaleY = 11;
+}
+
+// 长方体
+message DrawingCube
+{
+	optional int32 paintColor = 1;
+	optional float strokeWidth = 2;
+	optional Point posStart = 3;
+	optional Point posStop = 4;
+}
+
+// 球
+message DrawingBall
+{
+	optional int32 paintColor = 1;
+	optional float strokeWidth = 2;
+	optional Point pos = 3;
+	optional float radius = 4;
+}
+
+
+enum OperationType
+{
+	OperationType_Draw = 1;
+	OperationType_Clear = 2;
+	OperationType_Height = 3;
+	OperationType_Scroll = 4;
+	OperationType_TurnPage = 5;
+	OperationType_AddPage = 6;
+	OperationType_DeletePages = 7;
+	OperationType_AddImage = 8;
+	OperationType_AddVideo = 9;
+	OperationType_AddTopic = 11;
+	OperationType_AddSelectionGroup = 12;
+	OperationType_AddBordText = 17;
+	OperationType_DeletePhoto = 13;
+	OperationType_TopPhoto = 16;
+	OperationType_ModifyPhoto = 14;
+	OperationType_ModifySelections = 15;
+	OperationType_ModifyBoardText = 18;
+}
+
+
+message Operation
+{
+	optional OperationType operationType = 1 [default=OperationType_Draw];
+	optional string pageDir = 2;
+	optional int32 height = 3;
+	optional int32 scrollY = 4;
+	optional int32 newPageIndex = 5;
+	optional string newPageDir = 6;
+	repeated string deletePageDirs = 7;
+	// optional int64 duration = 8;
+	optional string cover = 8;
+	// optional string url = 9;
+	optional Drawing drawing = 9;
+	optional bytes bitmapData = 10;
+	// optional int32 bitmapWidth = 23;
+	// optional int32 bitmapHeight = 24;
+	optional bytes videoData = 11;
+	optional bytes parseData = 12;
+	optional string photoName = 13;
+	optional int32 photoX = 14;
+	optional int32 photoY = 15;
+	optional int32 photoRotation = 16;
+	optional int32 photoWidth = 17;
+	optional int32 photoHeight = 18;
+	optional bool hide = 19;
+	optional SelectionGroup selectionGroup = 20;
+	optional BoardText boardText = 21;
+	optional BoardPhoto photo = 22;
+}
+
+
+// 选项组
+message SelectionGroup
+{
+	optional int32 problemType = 1; // 题目类型
+	repeated string selections = 2; // 选项列表
+	repeated string rightAnswer = 3; // 正确答案
+	repeated string answer = 4; // 作答
+}
+
+// 画布文本
+message BoardText
+{
+	optional string text = 1;
+	optional int32 color = 2 [default=-16777216]; // 0xff000000
+	optional int32 size = 3 [default=30];
+
+	optional int32 gravity = 4 [default=17]; // Gravity.CENTER
+	optional int32 textStyle = 5;
+
+	optional int32 solidColor = 6;
+	optional int32 strokeWidth = 7;
+	optional int32 strokeColor = 8;
+	repeated float corners = 9;
+
+	repeated int32 paddings = 10;
+
+	optional float letterSpacing = 11;
+	optional float lineSpacingAdd = 12;
+	optional float lineSpacingMult = 13 [default=1];
+	optional float textScaleX = 14 [default=1];
+
+	optional int32 lines = 15;
+	optional int32 ellipsize = 16 [default=2];
+
+	optional float shadowLayerRadius = 17 [default=1];
+	optional float shadowLayerDx = 18;
+	optional float shadowLayerDy = 19;
+	optional int32 shadowLayerColor = 20;
+}
+
+
+message BoardPhoto
+{
+	optional int32 type = 1;
+	optional string name = 2;
+	optional int32 x = 3;
+	optional int32 y = 4;
+	optional int32 rotation = 5;
+	optional int32 width = 6;
+	optional int32 height = 7;
+	optional string cover = 8;
+	optional string url = 9;
+	optional int64 duration = 10;
+	optional SelectionGroup selectionGroup = 11;
+	optional BoardText boardText = 12;
+	optional bool hide = 13;
+	optional bool notEye = 14;
+	optional bool lock = 15;
+}
+
+message BoardConfig
+{
+	optional int32 bg = 1;
+	optional int32 height = 2;
+	optional int32 result = 3;
+	repeated BoardPhoto photos = 4;
+}
+
+
+message PhotoAddParam
+{
+	optional int32 x = 1 [default=-1];
+	optional int32 y = 2 [default=-1];
+	optional bool notEye = 3;
+	optional bool lock = 4;
+	optional bool doNotActive = 5;
+}

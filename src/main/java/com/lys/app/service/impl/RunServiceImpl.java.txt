@@ -1,0 +1,61 @@
+package com.lys.app.service.impl;
+
+import com.lys.app.service.RunService;
+import com.lys.protobuf.*;
+import org.springframework.stereotype.Service;
+
+import java.util.Vector;
+
+@Service
+public class RunServiceImpl implements RunService
+{
+	private static final Vector<String> sServerLogs = new Vector<>();
+
+	public static void addLog(String msg)
+	{
+		sServerLogs.add(msg);
+		if (sServerLogs.size() > 3000)
+			sServerLogs.remove(0);
+	}
+
+	@Override
+	public SResponse_GetServerLog GetServerLog(SRequest_GetServerLog request)
+	{
+		SResponse_GetServerLog response = new SResponse_GetServerLog();
+		response.logs = sServerLogs;
+		return response;
+	}
+
+	public static final SServerState sServerState = new SServerState();
+
+	@Override
+	public SResponse_GetServerState GetServerState(SRequest_GetServerState request)
+	{
+		SResponse_GetServerState response = new SResponse_GetServerState();
+		response.serverState = sServerState;
+		return response;
+	}
+
+	@Override
+	public SResponse_SetServerState SetServerState(SRequest_SetServerState request)
+	{
+		SResponse_SetServerState response = new SResponse_SetServerState();
+		sServerState.stop = request.stop;
+		response.stop = sServerState.stop;
+		return response;
+	}
+
+	@Override
+	public SResponse_GetTimeRecord GetTimeRecord(SRequest_GetTimeRecord request)
+	{
+		SResponse_GetTimeRecord response = new SResponse_GetTimeRecord();
+		return response;
+	}
+
+	@Override
+	public SResponse_GetServerUploadingList GetServerUploadingList(SRequest_GetServerUploadingList request)
+	{
+		SResponse_GetServerUploadingList response = new SResponse_GetServerUploadingList();
+		return response;
+	}
+}

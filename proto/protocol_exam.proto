@@ -1,0 +1,246 @@
+option java_package = "com.lys.protobuf";
+
+// import "protocol_common.proto";
+
+
+message ExamPoint
+{
+	optional string id = 1;
+	optional string chapter = 2;
+	optional string point = 3;
+	optional int32 difficulty = 4; // 1-5
+	optional int32 importance = 5; // 1-5
+	optional string frequency = 6; // 考频
+	optional string note = 7;
+}
+
+
+
+// ---------------------- xxxxxxxxxxxxx --------------------------
+message Request_ExamPointGetAll
+{
+}
+
+message Response_ExamPointGetAll
+{
+	repeated ExamPoint points = 1;
+}
+
+// ---------------------- xxxxxxxxxxxxx --------------------------
+message Request_ExamPointAddModify
+{
+	optional ExamPoint point = 1;
+}
+
+message Response_ExamPointAddModify
+{
+}
+
+// ---------------------- xxxxxxxxxxxxx --------------------------
+message Request_ExamPointDelete
+{
+	optional string id = 1;
+}
+
+message Response_ExamPointDelete
+{
+}
+
+
+
+enum TopicType
+{
+	TopicType_selectSingle = 0;
+	TopicType_selectMulti = 1;
+	TopicType_gap = 2;
+	TopicType_answer = 3;
+}
+
+message ExamPaperTopic
+{
+	optional string code = 1;
+	optional TopicType type = 2 [default=TopicType_selectSingle];
+	optional int32 allScore = 3;
+	optional int32 difficulty = 4; // 1-3
+	optional string pointId = 5;
+	optional ExamPoint point = 6;
+}
+
+message ExamPaper
+{
+	optional string id = 1;
+	optional string name = 2;
+	optional int64 time = 3;
+	repeated string files = 4;
+	optional string note = 5;
+	repeated ExamPaperTopic topics = 6;
+}
+
+
+
+
+// ---------------------- xxxxxxxxxxxxx --------------------------
+message Request_ExamPaperGetAll
+{
+}
+
+message Response_ExamPaperGetAll
+{
+	repeated ExamPaper papers = 1;
+}
+
+// ---------------------- xxxxxxxxxxxxx --------------------------
+message Request_ExamPaperAddModify
+{
+	optional ExamPaper paper = 1;
+}
+
+message Response_ExamPaperAddModify
+{
+}
+
+// ---------------------- xxxxxxxxxxxxx --------------------------
+message Request_ExamPaperDelete
+{
+	optional string id = 1;
+}
+
+message Response_ExamPaperDelete
+{
+}
+
+// ---------------------- xxxxxxxxxxxxx --------------------------
+message Request_ExamPaperDetail
+{
+	repeated ExamPaperTopic topics = 1;
+}
+
+message Response_ExamPaperDetail
+{
+	repeated ExamPaperTopic topics = 1;
+}
+
+
+enum ExamErrorType
+{
+	ExamErrorType_A = 0;
+	ExamErrorType_B = 1;
+	ExamErrorType_C = 2;
+	ExamErrorType_D = 3;
+}
+
+message ExamRecordTopic
+{
+	optional string code = 1;
+	optional int32 gotScore = 2;
+	optional ExamErrorType errorType = 3 [default=ExamErrorType_A];
+}
+
+
+enum ExamMindset
+{
+	ExamMindset_Normal = 0; // 一般般
+	ExamMindset_JinZhang = 1; // 紧张
+	ExamMindset_FangShong = 2; // 放松
+}
+
+message ExamRecord
+{
+	optional string id = 1;
+	optional string studentName = 2;
+	optional string paperId = 3;
+	optional ExamPaper paper = 4;
+	optional int32 selectTime = 5;
+	optional int32 gapTime = 6;
+	optional int32 answerTime = 7;
+	optional ExamMindset mindset = 8 [default=ExamMindset_Normal];
+	optional string note = 9;
+	repeated ExamRecordTopic topics = 10;
+	optional string noteType = 11;
+	optional string notePoint = 12;
+	optional string noteDifficulty = 13;
+	optional string noteErrorType = 14;
+	optional string noteOffer = 15;
+	optional string noteAll = 16;
+}
+
+
+// ---------------------- xxxxxxxxxxxxx --------------------------
+message Request_ExamRecordGetAll
+{
+}
+
+message Response_ExamRecordGetAll
+{
+	repeated ExamRecord records = 1;
+}
+
+// ---------------------- xxxxxxxxxxxxx --------------------------
+message Request_ExamRecordAddModify
+{
+	optional ExamRecord record = 1;
+}
+
+message Response_ExamRecordAddModify
+{
+}
+
+// ---------------------- xxxxxxxxxxxxx --------------------------
+message Request_ExamRecordDelete
+{
+	optional string id = 1;
+}
+
+message Response_ExamRecordDelete
+{
+}
+
+// ---------------------- xxxxxxxxxxxxx --------------------------
+message Request_ExamRecordDetail
+{
+	// repeated ExamRecordTopic topics = 1;
+}
+
+message Response_ExamRecordDetail
+{
+	// repeated ExamRecordTopic topics = 1;
+}
+
+
+
+message ExamCodeLossScore
+{
+	optional string code = 1;
+	optional float gotLv = 2; // 得分率
+}
+
+
+message ExamTypeLossScore
+{
+	optional TopicType type = 1 [default=TopicType_selectSingle];
+	optional int32 allScore = 2;
+	optional int32 lossScore = 3;
+}
+
+
+
+message ExamPointLossScore
+{
+	optional string pointId = 1;
+	optional string pointName = 2;
+	optional int32 lossScore = 3;
+}
+
+
+message ExamDifficultyLossScore
+{
+	optional int32 difficulty = 1;
+	optional int32 allScore = 2;
+	optional int32 lossScore = 3;
+}
+
+message ExamErrorTypeLossScore
+{
+	optional ExamErrorType errorType = 1 [default=ExamErrorType_A];
+	optional int32 lossScore = 2;
+}

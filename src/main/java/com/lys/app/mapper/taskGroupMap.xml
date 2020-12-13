@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lys.app.dao.TaskGroupDao">
+
+
+	<update id="createTable">
+        create table if not exists task_group(
+            task_group_id varchar(48),
+            task_group_name varchar(200),
+            task_group_important int,
+            task_group_difficulty int,
+            task_group_cover varchar(200),
+            task_group_sort bigint,
+            task_group_ts timestamp)
+    </update>
+
+
+	<resultMap id="taskGroupResultMap" type="sTaskGroup">
+		<id property="id" column="task_group_id"/>
+		<result property="name" column="task_group_name"/>
+		<result property="important" column="task_group_important"/>
+		<result property="difficulty" column="task_group_difficulty"/>
+		<result property="cover" column="task_group_cover"/>
+		<result property="sort" column="task_group_sort"/>
+	</resultMap>
+
+
+	<select id="get" resultMap="taskGroupResultMap">
+        select * from task_group
+        where task_group_id = #{id}
+    </select>
+
+
+	<select id="getList" resultMap="taskGroupResultMap">
+		select * from task_group
+		order by task_group_sort asc
+	</select>
+
+
+	<insert id="insert">
+        insert into task_group(
+            task_group_id,
+            task_group_name,
+            task_group_important,
+            task_group_difficulty,
+            task_group_cover,
+            task_group_sort)
+        value(
+            #{id},
+            #{name},
+            #{important},
+            #{difficulty},
+            #{cover},
+            #{sort})
+    </insert>
+
+
+	<update id="update">
+		update task_group
+		<set>
+			task_group_name=#{name},
+			task_group_important=#{important},
+			task_group_difficulty=#{difficulty},
+			task_group_cover=#{cover},
+			task_group_sort=#{sort}
+		</set>
+		where task_group_id = #{id}
+	</update>
+
+
+	<delete id="delete">
+		delete from task_group where task_group_id = #{id}
+	</delete>
+
+
+</mapper>

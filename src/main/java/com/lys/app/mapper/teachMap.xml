@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lys.app.dao.TeachDao">
+
+
+	<update id="createTable">
+        create table if not exists teach(
+            teach_teacher_id varchar(48),
+            teach_year int default 0,
+            teach_month int default 0,
+            teach_day int default 0,
+            teach_block int default 0,
+            teach_flag int default 0,
+            teach_student_id varchar(48),
+            teach_ts timestamp)
+    </update>
+
+
+	<resultMap id="teachResultMap" type="sTeach">
+		<id property="teacherId" column="teach_teacher_id"/>
+		<id property="year" column="teach_year"/>
+		<id property="month" column="teach_month"/>
+		<id property="day" column="teach_day"/>
+		<id property="block" column="teach_block"/>
+		<result property="flag" column="teach_flag"/>
+		<result property="studentId" column="teach_student_id"/>
+	</resultMap>
+
+
+	<select id="get" resultMap="teachResultMap">
+        select * from teach
+        where teach_teacher_id = #{teacherId}
+        and teach_year = #{year}
+        and teach_month = #{month}
+        and teach_day = #{day}
+        and teach_block = #{block}
+    </select>
+
+
+	<select id="getList" resultMap="teachResultMap">
+		select * from teach
+		<choose>
+			<when test="teacherId != null">
+				where teach_teacher_id = #{teacherId}
+			</when>
+			<otherwise>
+				where teach_year = #{year}
+				and teach_month = #{month}
+				and teach_day = #{day}
+			</otherwise>
+		</choose>
+	</select>
+
+
+	<insert id="insert">
+        insert into teach(
+            teach_teacher_id,
+            teach_year,
+            teach_month,
+            teach_day,
+            teach_block,
+            teach_flag,
+            teach_student_id)
+        value(
+            #{teacherId},
+            #{year},
+            #{month},
+            #{day},
+            #{block},
+            #{flag},
+            #{studentId})
+    </insert>
+
+
+	<update id="update">
+		update teach
+		<set>
+			teach_flag=#{flag},
+			teach_student_id=#{studentId}
+		</set>
+		where teach_teacher_id = #{teacherId}
+		and teach_year = #{year}
+		and teach_month = #{month}
+		and teach_day = #{day}
+		and teach_block = #{block}
+	</update>
+
+
+	<delete id="delete">
+		delete from teach
+		where teach_teacher_id = #{teacherId}
+		and teach_year = #{year}
+		and teach_month = #{month}
+		and teach_day = #{day}
+		and teach_block = #{block}
+	</delete>
+
+
+</mapper>

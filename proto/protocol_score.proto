@@ -1,0 +1,258 @@
+option java_package = "com.lys.protobuf";
+
+// import "protocol_common.proto";
+
+// import "protocol_board.proto";
+// import "protocol_note.proto";
+import "protocol_pair.proto";
+
+
+
+
+
+
+
+
+
+message Goods
+{
+	optional string id = 1;
+	optional string name = 2;
+	optional string cover = 3;
+	optional int32 score = 4;
+	optional int32 buyCount = 5;
+	optional int32 yuCount = 6;
+	optional int64 sort = 7;
+	optional bool invalid = 8;
+}
+
+// ---------------------- 获取物料列表 --------------------------
+message Request_GetGoodsList
+{
+	optional bool containInvalid = 1; // 是否包含无效
+}
+
+message Response_GetGoodsList
+{
+	repeated Goods goodsList = 1;
+}
+
+// ---------------------- xxxxxxxx --------------------------
+message Request_AddModifyGoods
+{
+	optional Goods goods = 1;
+}
+
+message Response_AddModifyGoods
+{
+}
+
+// ---------------------- xxxxxxxx --------------------------
+message Request_SwapGoods
+{
+	optional Goods goods1 = 1;
+	optional Goods goods2 = 2;
+}
+
+message Response_SwapGoods
+{
+}
+
+// ---------------------- xxxxxxxx --------------------------
+message Request_DeleteGoods
+{
+	optional string goodsId = 1;
+}
+
+message Response_DeleteGoods
+{
+}
+
+
+
+
+
+
+
+enum OrderState
+{
+	OrderState_Init = 1; // 初始状态
+	OrderState_Send = 2; // 已发货
+	OrderState_Receive = 3; // 已收到
+}
+
+
+message Order
+{
+	optional string id = 1;
+	optional string userId = 2;
+	optional Goods goods = 3;
+	optional int32 count = 4;
+	optional int32 score = 5;
+	optional int64 time = 6;
+	optional OrderState state = 7 [default=OrderState_Init];
+	optional string name = 8;
+	optional string phone = 9;
+	optional string address = 10;
+}
+
+// ---------------------- 获取兑换列表 --------------------------
+message Request_GetOrderList
+{
+	optional string userId = 1;
+	optional int32 state = 2; // 0:all   1-3:OrderState
+	optional int64 time = 3;
+	optional bool prev = 4;
+	optional int32 pageSize = 5;
+}
+
+message Response_GetOrderList
+{
+	repeated Order orders = 1;
+}
+
+// ---------------------- xxxxxxxx --------------------------
+message Request_AddOrder
+{
+	optional Order order = 1;
+}
+
+message Response_AddOrder
+{
+}
+
+// ---------------------- xxxxxxxx --------------------------
+message Request_ModifyOrderState
+{
+	optional string orderId = 1;
+	optional OrderState state = 2 [default=OrderState_Init];
+}
+
+message Response_ModifyOrderState
+{
+}
+
+
+
+
+
+
+
+message TaskGroup
+{
+	optional string id = 1;
+	optional string name = 2;
+	optional int32 important = 3;
+	optional int32 difficulty = 4;
+	optional string cover = 5;
+	optional int64 sort = 6;
+
+	optional int32 allCount = 7;
+	optional int32 newCount = 8;
+}
+
+// ---------------------- xxxxxxxx --------------------------
+message Request_GetTaskGroupList
+{
+}
+
+message Response_GetTaskGroupList
+{
+	repeated TaskGroup taskGroupList = 1;
+}
+
+// ---------------------- xxxxxxxx --------------------------
+message Request_AddModifyTaskGroup
+{
+	optional TaskGroup taskGroup = 1;
+}
+
+message Response_AddModifyTaskGroup
+{
+}
+
+// ---------------------- xxxxxxxx --------------------------
+message Request_SwapTaskGroup
+{
+	optional TaskGroup taskGroup1 = 1;
+	optional TaskGroup taskGroup2 = 2;
+}
+
+message Response_SwapTaskGroup
+{
+}
+
+// ---------------------- xxxxxxxx --------------------------
+message Request_DeleteTaskGroup
+{
+	optional string taskGroupId = 1;
+}
+
+message Response_DeleteTaskGroup
+{
+}
+
+
+
+
+
+
+enum TeachFlag
+{
+	TeachFlag_None = 0;
+	TeachFlag_Free = 1;
+	TeachFlag_Use = 2;
+	TeachFlag_Over = 3;
+}
+
+message Teach
+{
+	optional string teacherId = 1;
+	optional int32 year = 2;
+	optional int32 month = 3;
+	optional int32 day = 4;
+	optional int32 block = 5;
+	optional TeachFlag flag = 6 [default=TeachFlag_None];
+	optional string studentId = 7;
+}
+
+
+message TeachBlock
+{
+	optional int32 block = 1;
+	optional TeachFlag flag = 2 [default=TeachFlag_None];
+	optional string studentId = 3;
+}
+
+message TeachLine
+{
+	optional User teacher = 1;
+	optional int32 year = 2;
+	optional int32 month = 3;
+	optional int32 day = 4;
+	repeated TeachBlock blocks = 5;
+}
+
+// ---------------------- xxxxxxxx --------------------------
+message Request_GetTeachList
+{
+	optional string teacherId = 1;
+	optional int32 year = 2;
+	optional int32 month = 3;
+	optional int32 day = 4;
+}
+
+message Response_GetTeachList
+{
+	repeated Teach teachs = 1;
+}
+
+// ---------------------- xxxxxxxx --------------------------
+message Request_ModifyTeach
+{
+	repeated Teach teachs = 1;
+}
+
+message Response_ModifyTeach
+{
+}

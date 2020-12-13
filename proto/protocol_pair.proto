@@ -1,0 +1,631 @@
+option java_package = "com.lys.protobuf";
+
+// import "protocol_common.proto";
+
+import "protocol_board.proto";
+import "protocol_note.proto";
+
+
+
+
+
+
+
+message Device
+{
+	optional string deviceId = 1;
+	optional int32 loginCount = 2;
+}
+
+
+enum UserType
+{
+	UserType_SupterMaster = 1;
+	UserType_Master = 2;
+	UserType_Teacher = 3;
+	UserType_Student = 4;
+}
+
+enum Sex
+{
+	Sex_Unknow = 0;
+	Sex_Girl = 1;
+	Sex_Boy = 2;
+}
+
+
+enum TeachState
+{
+	TeachState_None = 1;
+	TeachState_Call = 2;
+	TeachState_Refuse = 3;
+	TeachState_Agree = 4;
+	TeachState_Timeout = 5;
+	TeachState_Ready = 6;
+	TeachState_Quit = 7;
+}
+
+enum CheckState
+{
+	CheckState_None = 1;
+	CheckState_Refresh = 2;
+	CheckState_Diff = 3;
+	CheckState_Equal = 4;
+}
+
+message User
+{
+	optional string id = 1;
+	optional UserType userType = 2 [default=UserType_Teacher];
+	optional int32 useRong = 3; // 是否使用融云
+	optional string psw = 4;
+	optional string name = 5;
+	optional string head = 6;
+	optional string token = 7;
+	optional int64 createTime = 8;
+	optional Sex sex = 9 [default=Sex_Girl];
+	optional int32 grade = 10;
+	optional int32 vipLevel = 11;
+	optional int64 vipTime = 12;
+	optional string phone = 13;
+	optional int32 score = 14;
+	optional string cpId = 15;
+	optional string ts = 16;
+
+	optional string ownerId = 17;
+
+	optional TeachState teachState = 18 [default=TeachState_None];
+	optional bool isMuteAudio = 19;
+	optional bool isLockWrite = 20;
+	optional CheckState checkState = 21 [default=CheckState_None];
+
+	optional string group = 22; // 好友组
+}
+
+enum PhoneCodeType
+{
+	PhoneCodeType_Reg = 1;
+	PhoneCodeType_Login = 2;
+}
+
+// ---------------------- 获取验证码 --------------------------
+message Request_UserPhoneCode
+{
+	optional string phone = 1;
+	optional PhoneCodeType type = 2 [default=PhoneCodeType_Reg];
+}
+
+message Response_UserPhoneCode
+{
+}
+
+// ---------------------- 注册 --------------------------
+message Request_UserReg
+{
+	optional string phone = 1;
+	optional string code = 2;
+}
+
+message Response_UserReg
+{
+	optional string userId = 1;
+	optional string psw = 2;
+}
+
+// ---------------------- 登录用户 --------------------------
+message Request_UserLogin
+{
+	optional string userId = 1;
+	optional string psw = 2;
+	optional string deviceId = 3;
+	optional string clientVersion = 4;
+}
+
+message Response_UserLogin
+{
+	optional User user = 1;
+}
+
+// ---------------------- 获取用户信息 --------------------------
+message Request_GetUser
+{
+	optional string userId = 1;
+	optional bool checkOwnerId = 2;
+}
+
+message Response_GetUser
+{
+	optional User user = 1;
+}
+
+// ---------------------- 修改头像 --------------------------
+message Request_ModifyHead
+{
+	optional string userId = 1;
+	optional string head = 2;
+}
+
+message Response_ModifyHead
+{
+}
+
+// ---------------------- 修改XX --------------------------
+message Request_ModifyName
+{
+	optional string userId = 1;
+	optional string name = 2;
+}
+
+message Response_ModifyName
+{
+}
+
+// ---------------------- 修改XX --------------------------
+message Request_ModifySex
+{
+	optional string userId = 1;
+	optional Sex sex = 2 [default=Sex_Girl];
+}
+
+message Response_ModifySex
+{
+}
+
+// ---------------------- 修改XX --------------------------
+message Request_ModifyGrade
+{
+	optional string userId = 1;
+	optional int32 grade = 2;
+}
+
+message Response_ModifyGrade
+{
+}
+
+// ---------------------- 修改XX --------------------------
+message Request_ModifyPsw
+{
+	optional string userId = 1;
+	optional string oldPsw = 2;
+	optional string newPsw = 3;
+}
+
+message Response_ModifyPsw
+{
+}
+
+// ---------------------- 获取用户列表 --------------------------
+message Request_GetUserList
+{
+	optional UserType userType = 1 [default=UserType_Teacher];
+}
+
+message Response_GetUserList
+{
+	repeated User users = 1;
+}
+
+// ---------------------- 添加用户 --------------------------
+message Request_AddUser
+{
+	optional string userId = 1;
+	optional UserType userType = 2 [default=UserType_Teacher];
+	optional string psw = 3;
+	optional string name = 4;
+	optional string head = 5;
+	optional Sex sex = 6 [default=Sex_Girl];
+	optional int32 grade = 7;
+	optional int32 from = 8; // 0:pad   1:phone
+}
+
+message Response_AddUser
+{
+	optional string userId = 1;
+	optional string psw = 2;
+}
+
+// ---------------------- 删除用户 --------------------------
+message Request_DeleteUser
+{
+	optional string userId = 1;
+}
+
+message Response_DeleteUser
+{
+}
+
+// ---------------------- xxxxxx --------------------------
+message Request_SetVip
+{
+	optional string userId = 1;
+	optional int32 vipLevel = 2;
+	optional int64 vipTime = 3;
+}
+
+message Response_SetVip
+{
+}
+
+// ---------------------- xxxxxx --------------------------
+message Request_SetCp
+{
+	optional string userId = 1;
+	optional string cpId = 2;
+}
+
+message Response_SetCp
+{
+}
+
+
+
+
+
+
+
+
+message UserGroup
+{
+	optional string id = 1;
+	optional string name = 2;
+	repeated string userIds = 3;
+}
+
+// ---------------------- xxxxxxxxxxxxx --------------------------
+message Request_UserGroupGetAll
+{
+}
+
+message Response_UserGroupGetAll
+{
+	repeated UserGroup userGroups = 1;
+}
+
+// ---------------------- xxxxxxxxxxxxx --------------------------
+message Request_UserGroupAddModify
+{
+	optional UserGroup userGroup = 1;
+}
+
+message Response_UserGroupAddModify
+{
+}
+
+// ---------------------- xxxxxxxxxxxxx --------------------------
+message Request_UserGroupDelete
+{
+	optional string id = 1;
+}
+
+message Response_UserGroupDelete
+{
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+message Friend
+{
+	optional string userId = 1;
+	optional string friendId = 2;
+	optional string group = 3;
+}
+
+// ---------------------- 获取好友列表 --------------------------
+message Request_GetFriendList
+{
+	optional string userId = 1;
+	optional bool checkOwnerId = 2;
+}
+
+message Response_GetFriendList
+{
+	repeated User friends = 1;
+}
+
+// ---------------------- 添加好友 --------------------------
+message Request_AddFriend
+{
+	optional string userId = 1;
+	optional string friendId = 2;
+}
+
+message Response_AddFriend
+{
+}
+
+// ---------------------- 删除好友 --------------------------
+message Request_DeleteFriend
+{
+	optional string userId = 1;
+	optional string friendId = 2;
+}
+
+message Response_DeleteFriend
+{
+}
+
+// ---------------------- xxxxxx --------------------------
+message Request_ModifyFriendGroup
+{
+	optional string userId = 1;
+	optional string friendId = 2;
+	optional string group = 3;
+}
+
+message Response_ModifyFriendGroup
+{
+}
+
+
+
+
+
+
+
+
+
+
+
+
+enum PTaskType
+{
+	PTaskType_None = 0;
+	PTaskType_Job = 1;
+	PTaskType_Class = 2;
+}
+
+enum PJobType
+{
+	PJobType_None = 0;
+	PJobType_OnlySelect = 1;
+	PJobType_MultTopic = 2;
+}
+
+enum PTaskState
+{
+	PTaskState_None = 0;
+	PTaskState_JobOver = 1; // 学生完成了作业
+	PTaskState_ReadOver = 2; // 老师完成了批阅
+}
+
+message PTask
+{
+	optional string id = 1;
+	optional string userId = 2;
+	optional User user = 3;
+	optional string sendUserId = 4;
+	optional User sendUser = 5;
+	optional PTaskType type = 6 [default=PTaskType_None];
+	optional PJobType jobType = 7 [default=PJobType_None];
+	optional string group = 8;
+	optional string name = 9;
+	optional string note = 10;
+	optional int64 createTime = 11;
+	optional PTaskState state = 12 [default=PTaskState_None];
+	optional string text = 13;
+	optional string comment = 14;
+	optional int64 overTime = 15;
+	optional int32 score = 16;
+	optional int32 open = 17;
+	optional int32 timesForWeb = 18;
+	optional int64 lastModifyTime = 19;
+
+	optional string cover = 20;
+}
+
+// ---------------------- xxxxx --------------------------
+message Request_FindTask
+{
+	optional string group = 1;
+	optional string name = 2;
+}
+
+message Response_FindTask
+{
+	optional PTask task = 1;
+}
+
+// ---------------------- 获取任务 --------------------------
+message Request_GetTask
+{
+	optional string taskId = 1;
+}
+
+message Response_GetTask
+{
+	optional PTask task = 1;
+}
+
+// ---------------------- 获取任务列表 --------------------------
+message Request_GetTaskList
+{
+	optional string userId = 1;
+	optional string group = 2;
+	optional int32 overType = 3; // 0:all   1:not over   2:over
+	optional int32 sortType = 4; // 0:createTime   1:overTime
+	optional int64 createTime = 5;
+	optional int64 overTime = 6;
+	optional bool prev = 7;
+	optional int32 pageSize = 8;
+}
+
+message Response_GetTaskList
+{
+	repeated PTask tasks = 1;
+}
+
+// ---------------------- 创建任务 --------------------------
+message Request_CreateTask
+{
+	optional string userId = 1;
+	optional string name = 2;
+	optional string group = 3;
+	optional PTaskType type = 4 [default=PTaskType_None];
+	optional PJobType jobType = 5 [default=PJobType_None];
+}
+
+message Response_CreateTask
+{
+	optional PTask task = 1;
+}
+
+// ---------------------- 发送任务 --------------------------
+message Request_SendTask
+{
+	repeated string userIds = 1;
+	repeated string taskIds = 2;
+	optional string text = 3;
+	optional string sendUserId = 4;
+}
+
+message Response_SendTask
+{
+	repeated PTask tasks = 1;
+}
+
+// ---------------------- 删除任务 --------------------------
+message Request_DeleteTask
+{
+	optional string taskId = 1;
+}
+
+message Response_DeleteTask
+{
+}
+
+// ---------------------- 获取任务文件版本 --------------------------
+message Request_GetTaskFileVersion
+{
+	optional PTask task = 1;
+}
+
+message Response_GetTaskFileVersion
+{
+	optional bool exists = 1;
+	optional int64 lastModifyTime = 2;
+}
+
+// ---------------------- 设置任务状态 --------------------------
+message Request_SetTaskState
+{
+	optional string taskId = 1;
+	optional PTaskState state = 2 [default=PTaskState_None];
+}
+
+message Response_SetTaskState
+{
+}
+
+// ---------------------- 设置任务备注 --------------------------
+message Request_SetTaskNote
+{
+	optional string taskId = 1;
+	optional string note = 2;
+}
+
+message Response_SetTaskNote
+{
+}
+
+// ---------------------- 修改任务 --------------------------
+message Request_ModifyTask
+{
+	optional string taskId = 1;
+	optional string group = 2;
+	optional string name = 3;
+	optional PTaskType type = 4 [default=PTaskType_None];
+	optional PJobType jobType = 5 [default=PJobType_None];
+}
+
+message Response_ModifyTask
+{
+}
+
+// ---------------------- 修改任务点评 --------------------------
+message Request_ModifyTaskComment
+{
+	optional string taskId = 1;
+	optional string comment = 2;
+}
+
+message Response_ModifyTaskComment
+{
+}
+
+// ---------------------- 任务加积分 --------------------------
+message Request_AddTaskScore
+{
+	optional string taskId = 1;
+	optional int32 score = 2;
+}
+
+message Response_AddTaskScore
+{
+}
+
+// ---------------------- 设置任务开放状态 --------------------------
+message Request_SetTaskOpen
+{
+	optional string taskId = 1;
+	optional int32 open = 2;
+}
+
+message Response_SetTaskOpen
+{
+}
+
+// ---------------------- xxxxx --------------------------
+message Request_RandomOpenTask
+{
+	optional int32 count = 1;
+}
+
+message Response_RandomOpenTask
+{
+	repeated PTask tasks = 1;
+}
+
+
+
+
+
+message PageData
+{
+	optional int32 index = 1;
+	optional string bigVideo = 2;
+	optional bool hasBoard = 3;
+	optional NotePage page = 4;
+	optional BoardConfig board = 5;
+}
+
+
+// ---------------------- 获取任务ForWeb --------------------------
+message Request_GetTaskForWeb
+{
+	optional string id = 1;
+	optional string page = 2;
+}
+
+message Response_GetTaskForWeb
+{
+	optional string userId = 1;
+	optional string id = 2;
+	optional string urlRoot = 3;
+	optional string name = 4;
+	optional int32 count = 5;
+	optional bool singlePage = 6;
+	optional string prevPage = 7;
+	optional string nextPage = 8;
+	repeated PageData pageDatas = 9;
+}

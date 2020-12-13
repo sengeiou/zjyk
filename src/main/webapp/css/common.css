@@ -1,0 +1,41 @@
+.abs_pos {
+    position: absolute;
+}
+
+.fixed_pos {
+    position: fixed;
+}
+
+.rotate90 {
+    transform: rotate(90deg);
+}
+
+.content {
+    border: 0px solid red;
+}
+
+
+a.clear:link {
+    color: black;
+    text-decoration: none;
+}
+
+a.clear:visited {
+    color: black;
+    text-decoration: none;
+}
+
+a.clear:hover {
+    color: #0070cc;
+    text-decoration: none;
+}
+
+a.clear:active {
+    color: #0070cc;
+    text-decoration: none;
+}
+
+
+.async-load {
+    display: none;
+}

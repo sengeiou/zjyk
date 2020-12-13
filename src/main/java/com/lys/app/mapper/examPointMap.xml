@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lys.app.dao.ExamPointDao">
+
+
+	<update id="createTable">
+        create table if not exists t_exam_point(
+            exam_point_id varchar(48),
+            exam_point_chapter text,
+            exam_point_point text,
+            exam_point_difficulty int default 3,
+            exam_point_importance int default 3,
+            exam_point_frequency text,
+            exam_point_note text,
+            exam_point_ts timestamp)
+    </update>
+
+
+	<resultMap id="examPointResultMap" type="sExamPoint">
+		<id property="id" column="exam_point_id"/>
+		<result property="chapter" column="exam_point_chapter"/>
+		<result property="point" column="exam_point_point"/>
+		<result property="difficulty" column="exam_point_difficulty"/>
+		<result property="importance" column="exam_point_importance"/>
+		<result property="frequency" column="exam_point_frequency"/>
+		<result property="note" column="exam_point_note"/>
+	</resultMap>
+
+
+	<select id="get" resultMap="examPointResultMap">
+        select * from t_exam_point
+        where exam_point_id = #{id}
+    </select>
+
+
+	<select id="getList" resultMap="examPointResultMap">
+        select * from t_exam_point
+    </select>
+
+
+	<select id="search" resultMap="examPointResultMap">
+		select * from t_exam_point
+		<where>
+			<if test="keywords !=null and keywords.size() > 0">
+				and
+				<foreach item="keyword" collection="keywords" open="(" separator="or" close=")">
+					exam_point_chapter like concat('', #{keyword}, '')
+					or exam_point_point like concat('%', #{keyword}, '%')
+				</foreach>
+			</if>
+		</where>
+		limit #{offset}, #{rows}
+	</select>
+
+
+	<select id="searchCount" resultType="Integer">
+		select count(*) from t_exam_point
+		<where>
+			<if test="keywords !=null and keywords.size() > 0">
+				and
+				<foreach item="keyword" collection="keywords" open="(" separator="or" close=")">
+					exam_point_chapter like concat('', #{keyword}, '')
+					or exam_point_point like concat('%', #{keyword}, '%')
+				</foreach>
+			</if>
+		</where>
+	</select>
+
+
+	<insert id="insert">
+        insert into t_exam_point(
+            exam_point_id,
+            exam_point_chapter,
+            exam_point_point,
+            exam_point_difficulty,
+            exam_point_importance,
+            exam_point_frequency,
+            exam_point_note)
+        value(
+            #{id},
+            #{chapter},
+            #{point},
+            #{difficulty},
+            #{importance},
+            #{frequency},
+            #{note})
+    </insert>
+
+
+	<update id="update">
+		update t_exam_point
+		<set>
+			exam_point_chapter=#{chapter},
+			exam_point_point=#{point},
+			exam_point_difficulty=#{difficulty},
+			exam_point_importance=#{importance},
+			exam_point_frequency=#{frequency},
+			exam_point_note=#{note}
+		</set>
+		where exam_point_id = #{id}
+	</update>
+
+
+	<delete id="delete">
+		delete from t_exam_point where exam_point_id = #{id}
+	</delete>
+
+
+</mapper>

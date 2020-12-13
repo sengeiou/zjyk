@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lys.app.dao.LiveDao">
+
+
+	<update id="createTable">
+        create table if not exists live(
+            live_id varchar(48),
+            live_actor_id varchar(48),
+            live_name varchar(100),
+            live_des text,
+            live_cover varchar(256),
+            live_video varchar(256),
+            live_duration int default 0,
+            live_task_id varchar(48),
+            live_type int default 0,
+            live_user_ids text,
+            live_start_time bigint default 0,
+            live_ts timestamp)
+    </update>
+
+
+	<resultMap id="liveResultMap" type="sLiveTask">
+		<id property="id" column="live_id"/>
+		<result property="actorId" column="live_actor_id"/>
+		<result property="name" column="live_name"/>
+		<result property="des" column="live_des"/>
+		<result property="cover" column="live_cover"/>
+		<result property="video" column="live_video"/>
+		<result property="duration" column="live_duration"/>
+		<result property="taskId" column="live_task_id"/>
+		<result property="type" column="live_type"/>
+		<result property="userIds" column="live_user_ids" typeHandler="com.lys.app.typehandler.ListStringTypeHandler"/>
+		<result property="startTime" column="live_start_time"/>
+	</resultMap>
+
+
+	<select id="get" resultMap="liveResultMap">
+        select * from live
+        where live_id = #{id}
+    </select>
+
+
+	<select id="find" resultMap="liveResultMap">
+        select * from live
+        where live_type = 1
+        or live_type = 3
+        or live_user_ids like concat('%', #{userId}, '%')
+        order by live_start_time desc
+    </select>
+
+
+	<select id="getList" resultMap="liveResultMap">
+        select * from live
+        order by live_start_time desc
+    </select>
+
+
+	<insert id="insert">
+        insert into live(
+            live_id,
+            live_actor_id,
+            live_name,
+            live_des,
+            live_cover,
+            live_video,
+            live_duration,
+            live_task_id,
+            live_type,
+            live_user_ids,
+            live_start_time)
+        value(
+            #{id},
+            #{actorId},
+            #{name},
+            #{des},
+            #{cover},
+            #{video},
+            #{duration},
+            #{taskId},
+            #{type},
+            #{userIds, typeHandler=com.lys.app.typehandler.ListStringTypeHandler},
+            #{startTime})
+    </insert>
+
+
+	<update id="update">
+		update live
+		<set>
+			live_actor_id=#{actorId},
+			live_name=#{name},
+			live_des=#{des},
+			live_cover=#{cover},
+			live_video=#{video},
+			live_duration=#{duration},
+			live_task_id=#{taskId},
+			live_type=#{type},
+			live_user_ids=#{userIds, typeHandler=com.lys.app.typehandler.ListStringTypeHandler},
+			live_start_time=#{startTime}
+		</set>
+		where live_id = #{id}
+	</update>
+
+
+	<delete id="delete">
+		delete from live where live_id = #{id}
+	</delete>
+
+
+</mapper>

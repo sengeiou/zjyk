@@ -1,0 +1,58 @@
+option java_package = "com.lys.protobuf";
+
+// import "protocol_common.proto";
+
+
+
+
+
+
+
+message App
+{
+	optional string pkgName = 1;
+	optional string channel = 2;
+	optional int32 versionCode = 3;
+	optional string versionName = 4;
+	optional float probability = 5;
+	optional string name = 6;
+	optional int64 size = 7;
+	optional string apkUrl = 8;
+	optional string icoUrl = 9;
+	optional string des = 10;
+
+	optional bool isSystem = 11;
+}
+
+// ---------------------- 获取应用列表 --------------------------
+message Request_GetAppInfoList
+{
+	optional string channel = 1;
+}
+
+message Response_GetAppInfoList
+{
+	repeated App apps = 1;
+}
+
+// ---------------------- 获取应用 --------------------------
+message Request_GetAppInfo
+{
+	optional string pkgName = 1;
+	optional string channel = 2;
+}
+
+message Response_GetAppInfo
+{
+	optional App app = 1;
+}
+
+// ---------------------- 设置APK信息 --------------------------
+message Request_SetAppInfo
+{
+	optional App app = 1;
+}
+
+message Response_SetAppInfo
+{
+}

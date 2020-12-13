@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lys.app.dao.TeachRecordDao">
+
+
+	<update id="createTable">
+        create table if not exists teach_record(
+            teach_record_teach_id varchar(48),
+            teach_record_user_id varchar(48),
+            teach_record_is_host int default 0,
+            teach_record_target_count int default 0,
+            teach_record_target_ids text,
+            teach_record_task_id varchar(48),
+            teach_record_start_time bigint default 0,
+            teach_record_over_time bigint default 0,
+            teach_record_teach_pages text,
+            teach_record_confirm_msg text,
+            teach_record_question_match varchar(40),
+            teach_record_question_diff varchar(40),
+            teach_record_question_got varchar(40),
+            teach_record_question_quality varchar(40),
+            teach_record_question_like varchar(40),
+            teach_record_question_hot varchar(40),
+            teach_record_question_mind varchar(40),
+            teach_record_question_logic varchar(40),
+            teach_record_question_other text,
+            teach_record_ts timestamp)
+    </update>
+
+
+	<resultMap id="teachRecordResultMap" type="sTeachRecord">
+		<id property="teachId" column="teach_record_teach_id"/>
+		<id property="userId" column="teach_record_user_id"/>
+		<result property="isHost" column="teach_record_is_host"/>
+		<result property="targetCount" column="teach_record_target_count"/>
+		<result property="targetIds" column="teach_record_target_ids" typeHandler="com.lys.app.typehandler.ListStringTypeHandler"/>
+		<result property="taskId" column="teach_record_task_id"/>
+		<result property="startTime" column="teach_record_start_time"/>
+		<result property="overTime" column="teach_record_over_time"/>
+		<result property="teachPages" column="teach_record_teach_pages" typeHandler="com.lys.app.typehandler.ListSTeachPageTypeHandler"/>
+		<result property="confirmMsg" column="teach_record_confirm_msg"/>
+		<result property="questionMatch" column="teach_record_question_match"/>
+		<result property="questionDiff" column="teach_record_question_diff"/>
+		<result property="questionGot" column="teach_record_question_got"/>
+		<result property="questionQuality" column="teach_record_question_quality"/>
+		<result property="questionLike" column="teach_record_question_like"/>
+		<result property="questionHot" column="teach_record_question_hot"/>
+		<result property="questionMind" column="teach_record_question_mind"/>
+		<result property="questionLogic" column="teach_record_question_logic"/>
+		<result property="questionOther" column="teach_record_question_other"/>
+		<association property="task" javaType="sPTask">
+			<id property="id" column="task_id"/>
+			<result property="userId" column="task_user_id"/>
+			<result property="type" column="task_type"/>
+			<result property="jobType" column="task_job_type"/>
+			<result property="group" column="task_group"/>
+			<result property="name" column="task_name"/>
+			<result property="note" column="task_note"/>
+			<result property="createTime" column="task_create_time"/>
+			<result property="state" column="task_state"/>
+			<result property="text" column="task_text"/>
+			<result property="comment" column="task_comment"/>
+			<result property="overTime" column="task_over_time"/>
+			<result property="score" column="task_score"/>
+			<result property="open" column="task_open"/>
+			<result property="timesForWeb" column="task_times_for_web"/>
+			<result property="lastModifyTime" column="task_last_modify_time"/>
+		</association>
+	</resultMap>
+
+
+	<select id="get" resultMap="teachRecordResultMap">
+        select * from teach_record
+        where teach_record_teach_id = #{teachId} and teach_record_user_id = #{userId}
+    </select>
+
+
+	<select id="find" resultMap="teachRecordResultMap">
+        select * from teach_record
+        where teach_record_teach_id = #{teachId}
+    </select>
+
+
+	<select id="getList" resultMap="teachRecordResultMap">
+		select * from teach_record
+		left join task on teach_record.teach_record_task_id = task.task_id
+		where teach_record_user_id = #{userId}
+		and teach_record_start_time > #{fromTime}
+		and teach_record_start_time &lt; #{toTime}
+		order by teach_record_start_time desc
+	</select>
+
+
+	<insert id="insert">
+        insert into teach_record(
+            teach_record_teach_id,
+            teach_record_user_id,
+            teach_record_is_host,
+            teach_record_target_count,
+            teach_record_target_ids,
+            teach_record_task_id,
+            teach_record_start_time,
+            teach_record_over_time,
+            teach_record_teach_pages,
+            teach_record_confirm_msg,
+            teach_record_question_match,
+            teach_record_question_diff,
+            teach_record_question_got,
+            teach_record_question_quality,
+            teach_record_question_like,
+            teach_record_question_hot,
+            teach_record_question_mind,
+            teach_record_question_logic,
+            teach_record_question_other)
+        value(
+            #{teachId},
+            #{userId},
+            #{isHost},
+            #{targetCount},
+            #{targetIds, typeHandler=com.lys.app.typehandler.ListStringTypeHandler},
+            #{taskId},
+            #{startTime},
+            #{overTime},
+            #{teachPages, typeHandler=com.lys.app.typehandler.ListSTeachPageTypeHandler},
+            #{confirmMsg},
+            #{questionMatch},
+            #{questionDiff},
+            #{questionGot},
+            #{questionQuality},
+            #{questionLike},
+            #{questionHot},
+            #{questionMind},
+            #{questionLogic},
+            #{questionOther})
+    </insert>
+
+
+	<update id="update">
+		update teach_record
+		<set>
+			teach_record_is_host=#{isHost},
+			teach_record_target_count=#{targetCount},
+			teach_record_target_ids=#{targetIds, typeHandler=com.lys.app.typehandler.ListStringTypeHandler},
+			teach_record_task_id=#{taskId},
+			teach_record_start_time=#{startTime},
+			teach_record_over_time=#{overTime},
+			teach_record_teach_pages=#{teachPages, typeHandler=com.lys.app.typehandler.ListSTeachPageTypeHandler},
+			teach_record_confirm_msg=#{confirmMsg},
+			teach_record_question_match=#{questionMatch},
+			teach_record_question_diff=#{questionDiff},
+			teach_record_question_got=#{questionGot},
+			teach_record_question_quality=#{questionQuality},
+			teach_record_question_like=#{questionLike},
+			teach_record_question_hot=#{questionHot},
+			teach_record_question_mind=#{questionMind},
+			teach_record_question_logic=#{questionLogic},
+			teach_record_question_other=#{questionOther}
+		</set>
+		where teach_record_teach_id = #{teachId} and teach_record_user_id = #{userId}
+	</update>
+
+
+	<update id="updateOverTime">
+		update teach_record
+		<set>
+			teach_record_over_time=#{overTime}
+		</set>
+		where teach_record_teach_id = #{teachId} and teach_record_user_id = #{userId}
+	</update>
+
+
+	<update id="updateConfirmMsg">
+		update teach_record
+		<set>
+			teach_record_confirm_msg=#{confirmMsg}
+		</set>
+		where teach_record_teach_id = #{teachId} and teach_record_user_id = #{userId}
+	</update>
+
+
+	<update id="updateQuestionStudent">
+		update teach_record
+		<set>
+			teach_record_question_match=#{questionMatch},
+			teach_record_question_diff=#{questionDiff},
+			teach_record_question_got=#{questionGot},
+			teach_record_question_quality=#{questionQuality},
+			teach_record_question_like=#{questionLike}
+		</set>
+		where teach_record_teach_id = #{teachId} and teach_record_user_id = #{userId}
+	</update>
+
+
+	<update id="updateQuestionTeacher">
+		update teach_record
+		<set>
+			teach_record_question_hot=#{questionHot},
+			teach_record_question_mind=#{questionMind},
+			teach_record_question_logic=#{questionLogic},
+			teach_record_question_other=#{questionOther}
+		</set>
+		where teach_record_teach_id = #{teachId}
+	</update>
+
+
+	<update id="updateTeachPages">
+		update teach_record
+		<set>
+			teach_record_teach_pages=#{teachPages, typeHandler=com.lys.app.typehandler.ListSTeachPageTypeHandler}
+		</set>
+		where teach_record_teach_id = #{teachId}
+	</update>
+
+
+	<delete id="delete">
+		delete from teach_record where teach_record_teach_id = #{teachId} and teach_record_user_id = #{userId}
+	</delete>
+
+
+</mapper>

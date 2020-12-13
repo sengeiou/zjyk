@@ -1,0 +1,494 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lys.app.dao.TaskDao">
+
+
+	<update id="createTable">
+        create table if not exists task(
+            task_id varchar(48),
+            task_user_id varchar(48),
+            task_send_user_id varchar(48),
+            task_type int default 0,
+            task_job_type int default 0,
+            task_group varchar(100),
+            task_name varchar(100),
+            task_note text,
+            task_create_time bigint default 0,
+            task_state int default 0,
+            task_text text,
+            task_comment text,
+            task_over_time bigint default 0,
+            task_score int default 0,
+            task_open int default 0,
+            task_times_for_web int default 0,
+            task_last_modify_time bigint default 0,
+            task_ts timestamp)
+    </update>
+
+
+	<resultMap id="taskResultMap" type="sPTask">
+		<id property="id" column="task_id"/>
+		<result property="userId" column="task_user_id"/>
+		<result property="sendUserId" column="task_send_user_id"/>
+		<result property="type" column="task_type"/>
+		<result property="jobType" column="task_job_type"/>
+		<result property="group" column="task_group"/>
+		<result property="name" column="task_name"/>
+		<result property="note" column="task_note"/>
+		<result property="createTime" column="task_create_time"/>
+		<result property="state" column="task_state"/>
+		<result property="text" column="task_text"/>
+		<result property="comment" column="task_comment"/>
+		<result property="overTime" column="task_over_time"/>
+		<result property="score" column="task_score"/>
+		<result property="open" column="task_open"/>
+		<result property="timesForWeb" column="task_times_for_web"/>
+		<result property="lastModifyTime" column="task_last_modify_time"/>
+		<association property="user" javaType="sUser">
+			<id property="id" column="u_user_id"/>
+			<result property="userType" column="u_user_user_type"/>
+			<result property="psw" column="u_user_psw"/>
+			<result property="name" column="u_user_name"/>
+			<result property="head" column="u_user_head"/>
+			<result property="token" column="u_user_token"/>
+			<result property="sex" column="u_user_sex"/>
+			<result property="grade" column="u_user_grade"/>
+			<result property="vipLevel" column="u_user_vip_level"/>
+			<result property="vipTime" column="u_user_vip_time"/>
+			<result property="phone" column="u_user_phone"/>
+			<result property="score" column="u_user_score"/>
+			<result property="cpId" column="u_user_cp_id"/>
+		</association>
+		<association property="sendUser" javaType="sUser">
+			<id property="id" column="s_user_id"/>
+			<result property="userType" column="s_user_user_type"/>
+			<result property="psw" column="s_user_psw"/>
+			<result property="name" column="s_user_name"/>
+			<result property="head" column="s_user_head"/>
+			<result property="token" column="s_user_token"/>
+			<result property="sex" column="s_user_sex"/>
+			<result property="grade" column="s_user_grade"/>
+			<result property="vipLevel" column="s_user_vip_level"/>
+			<result property="vipTime" column="s_user_vip_time"/>
+			<result property="phone" column="s_user_phone"/>
+			<result property="score" column="s_user_score"/>
+			<result property="cpId" column="s_user_cp_id"/>
+		</association>
+	</resultMap>
+
+
+	<select id="get" resultMap="taskResultMap">
+        select
+            task_id,
+            task_user_id,
+            task_send_user_id,
+            task_type,
+            task_job_type,
+            task_group,
+            task_name,
+            task_note,
+            task_create_time,
+            task_state,
+            task_text,
+            task_comment,
+            task_over_time,
+            task_score,
+            task_open,
+            task_times_for_web,
+            task_last_modify_time,
+
+            u.user_id			u_user_id,
+            u.user_user_type	u_user_user_type,
+            u.user_psw			u_user_psw,
+            u.user_name			u_user_name,
+            u.user_head			u_user_head,
+            u.user_token		u_user_token,
+            u.user_sex			u_user_sex,
+            u.user_grade		u_user_grade,
+            u.user_vip_level	u_user_vip_level,
+            u.user_vip_time		u_user_vip_time,
+            u.user_phone		u_user_phone,
+            u.user_score		u_user_score,
+            u.user_cp_id		u_user_cp_id,
+
+            s.user_id			s_user_id,
+            s.user_user_type	s_user_user_type,
+            s.user_psw			s_user_psw,
+            s.user_name			s_user_name,
+            s.user_head			s_user_head,
+            s.user_token		s_user_token,
+            s.user_sex			s_user_sex,
+            s.user_grade		s_user_grade,
+            s.user_vip_level	s_user_vip_level,
+            s.user_vip_time		s_user_vip_time,
+            s.user_phone		s_user_phone,
+            s.user_score		s_user_score,
+            s.user_cp_id		s_user_cp_id
+        from task
+        left join user u on task.task_user_id = u.user_id
+        left join user s on task.task_send_user_id = s.user_id
+        where task_id = #{id}
+    </select>
+
+
+	<select id="find" resultMap="taskResultMap">
+        select
+            task_id,
+            task_user_id,
+            task_send_user_id,
+            task_type,
+            task_job_type,
+            task_group,
+            task_name,
+            task_note,
+            task_create_time,
+            task_state,
+            task_text,
+            task_comment,
+            task_over_time,
+            task_score,
+            task_open,
+            task_times_for_web,
+            task_last_modify_time,
+
+            u.user_id			u_user_id,
+            u.user_user_type	u_user_user_type,
+            u.user_psw			u_user_psw,
+            u.user_name			u_user_name,
+            u.user_head			u_user_head,
+            u.user_token		u_user_token,
+            u.user_sex			u_user_sex,
+            u.user_grade		u_user_grade,
+            u.user_vip_level	u_user_vip_level,
+            u.user_vip_time		u_user_vip_time,
+            u.user_phone		u_user_phone,
+            u.user_score		u_user_score,
+            u.user_cp_id		u_user_cp_id,
+
+            s.user_id			s_user_id,
+            s.user_user_type	s_user_user_type,
+            s.user_psw			s_user_psw,
+            s.user_name			s_user_name,
+            s.user_head			s_user_head,
+            s.user_token		s_user_token,
+            s.user_sex			s_user_sex,
+            s.user_grade		s_user_grade,
+            s.user_vip_level	s_user_vip_level,
+            s.user_vip_time		s_user_vip_time,
+            s.user_phone		s_user_phone,
+            s.user_score		s_user_score,
+            s.user_cp_id		s_user_cp_id
+        from task
+        left join user u on task.task_user_id = u.user_id
+        left join user s on task.task_send_user_id = s.user_id
+        where task_name = #{name} and task_group = #{group}
+    </select>
+
+
+	<select id="getList" resultMap="taskResultMap">
+		select
+		task_id,
+		task_user_id,
+		task_send_user_id,
+		task_type,
+		task_job_type,
+		task_group,
+		task_name,
+		task_note,
+		task_create_time,
+		task_state,
+		task_text,
+		task_comment,
+		task_over_time,
+		task_score,
+		task_open,
+		task_times_for_web,
+		task_last_modify_time,
+
+		u.user_id u_user_id,
+		u.user_user_type u_user_user_type,
+		u.user_psw u_user_psw,
+		u.user_name u_user_name,
+		u.user_head u_user_head,
+		u.user_token u_user_token,
+		u.user_sex u_user_sex,
+		u.user_grade u_user_grade,
+		u.user_vip_level u_user_vip_level,
+		u.user_vip_time u_user_vip_time,
+		u.user_phone u_user_phone,
+		u.user_score u_user_score,
+		u.user_cp_id u_user_cp_id,
+
+		s.user_id s_user_id,
+		s.user_user_type s_user_user_type,
+		s.user_psw s_user_psw,
+		s.user_name s_user_name,
+		s.user_head s_user_head,
+		s.user_token s_user_token,
+		s.user_sex s_user_sex,
+		s.user_grade s_user_grade,
+		s.user_vip_level s_user_vip_level,
+		s.user_vip_time s_user_vip_time,
+		s.user_phone s_user_phone,
+		s.user_score s_user_score,
+		s.user_cp_id s_user_cp_id
+		from task
+		left join user u on task.task_user_id = u.user_id
+		left join user s on task.task_send_user_id = s.user_id
+
+		where task_user_id = #{userId}
+
+		<if test="group != null">
+			and task_group = #{group}
+		</if>
+
+		<choose>
+			<when test="overType == 1">
+				and task_over_time = 0
+			</when>
+			<when test="overType == 2">
+				and task_over_time > 0
+			</when>
+		</choose>
+
+		<choose>
+			<when test="sortType == 0">
+
+				<if test="createTime > 0">
+					<choose>
+						<when test="prev">
+							and task_create_time > #{createTime}
+						</when>
+						<otherwise>
+							and task_create_time &lt; #{createTime}
+						</otherwise>
+					</choose>
+				</if>
+				<choose>
+					<when test="prev">
+						order by task_create_time asc
+					</when>
+					<otherwise>
+						order by task_create_time desc
+					</otherwise>
+				</choose>
+
+			</when>
+			<when test="sortType == 1">
+
+				<if test="overTime > 0">
+					<choose>
+						<when test="prev">
+							and task_over_time > #{overTime}
+						</when>
+						<otherwise>
+							and task_over_time &lt; #{overTime}
+						</otherwise>
+					</choose>
+				</if>
+				<choose>
+					<when test="prev">
+						order by task_over_time asc
+					</when>
+					<otherwise>
+						order by task_over_time desc
+					</otherwise>
+				</choose>
+
+			</when>
+		</choose>
+
+		<if test="pageSize > 0">
+			limit 0, #{pageSize}
+		</if>
+
+	</select>
+
+
+	<select id="search" resultMap="taskResultMap">
+		select
+		task_id,
+		task_user_id,
+		task_send_user_id,
+		task_type,
+		task_job_type,
+		task_group,
+		task_name,
+		task_note,
+		task_create_time,
+		task_state,
+		task_text,
+		task_comment,
+		task_over_time,
+		task_score,
+		task_open,
+		task_times_for_web,
+		task_last_modify_time,
+
+		u.user_id u_user_id,
+		u.user_user_type u_user_user_type,
+		u.user_psw u_user_psw,
+		u.user_name u_user_name,
+		u.user_head u_user_head,
+		u.user_token u_user_token,
+		u.user_sex u_user_sex,
+		u.user_grade u_user_grade,
+		u.user_vip_level u_user_vip_level,
+		u.user_vip_time u_user_vip_time,
+		u.user_phone u_user_phone,
+		u.user_score u_user_score,
+		u.user_cp_id u_user_cp_id,
+
+		s.user_id s_user_id,
+		s.user_user_type s_user_user_type,
+		s.user_psw s_user_psw,
+		s.user_name s_user_name,
+		s.user_head s_user_head,
+		s.user_token s_user_token,
+		s.user_sex s_user_sex,
+		s.user_grade s_user_grade,
+		s.user_vip_level s_user_vip_level,
+		s.user_vip_time s_user_vip_time,
+		s.user_phone s_user_phone,
+		s.user_score s_user_score,
+		s.user_cp_id s_user_cp_id
+		from task
+		left join user u on task.task_user_id = u.user_id
+		left join user s on task.task_send_user_id = s.user_id
+		<where>
+			<if test="type !=null and type != -1">
+				and task_type = #{type}
+			</if>
+			<if test="jobType !=null and jobType != -1">
+				and task_job_type = #{jobType}
+			</if>
+			<if test="timesForWeb !=null">
+				and task_times_for_web >= #{timesForWeb}
+			</if>
+			<if test="beginTime !=null">
+				and task_create_time >= #{beginTime}
+			</if>
+			<if test="endTime !=null">
+				and task_create_time &lt; #{endTime}
+			</if>
+			<if test="keywords !=null and keywords.size() > 0">
+				and
+				<foreach item="keyword" collection="keywords" open="(" separator="or" close=")">
+					task_id like concat('%', #{keyword}, '%')
+					or task_group like concat('%', #{keyword}, '%')
+					or task_name like concat('%', #{keyword}, '%')
+				</foreach>
+			</if>
+		</where>
+		order by task_create_time asc
+		limit #{offset}, #{rows}
+	</select>
+
+
+	<select id="searchCount" resultType="Integer">
+		select count(*) from task
+		<where>
+			<if test="type !=null and type != -1">
+				and task_type = #{type}
+			</if>
+			<if test="jobType !=null and jobType != -1">
+				and task_job_type = #{jobType}
+			</if>
+			<if test="timesForWeb !=null">
+				and task_times_for_web >= #{timesForWeb}
+			</if>
+			<if test="beginTime !=null">
+				and task_create_time >= #{beginTime}
+			</if>
+			<if test="endTime !=null">
+				and task_create_time &lt; #{endTime}
+			</if>
+			<if test="keywords !=null and keywords.size() > 0">
+				and
+				<foreach item="keyword" collection="keywords" open="(" separator="or" close=")">
+					task_id like concat('%', #{keyword}, '%')
+					or task_group like concat('%', #{keyword}, '%')
+					or task_name like concat('%', #{keyword}, '%')
+				</foreach>
+			</if>
+		</where>
+	</select>
+
+
+	<insert id="insert">
+        insert into task(
+            task_id,
+            task_user_id,
+            task_send_user_id,
+            task_type,
+            task_job_type,
+            task_group,
+            task_name,
+            task_note,
+            task_create_time,
+            task_state,
+            task_text,
+            task_comment,
+            task_over_time,
+            task_score,
+            task_open,
+            task_times_for_web,
+            task_last_modify_time)
+        value(
+            #{id},
+            #{userId},
+            #{sendUser.id},
+            #{type},
+            #{jobType},
+            #{group},
+            #{name},
+            #{note},
+            #{createTime},
+            #{state},
+            #{text},
+            #{comment},
+            #{overTime},
+            #{score},
+            #{open},
+            #{timesForWeb},
+            #{lastModifyTime})
+    </insert>
+
+
+	<update id="update">
+		update task
+		<set>
+			task_user_id=#{userId},
+			task_send_user_id=#{sendUser.id},
+			task_type=#{type},
+			task_job_type=#{jobType},
+			task_group=#{group},
+			task_name=#{name},
+			task_note=#{note},
+			task_create_time=#{createTime},
+			task_state=#{state},
+			task_text=#{text},
+			task_comment=#{comment},
+			task_over_time=#{overTime},
+			task_score=#{score},
+			task_open=#{open},
+			task_times_for_web=#{timesForWeb},
+			task_last_modify_time=#{lastModifyTime}
+		</set>
+		where task_id = #{id}
+	</update>
+
+
+	<delete id="delete">
+		delete from task where task_id = #{id}
+	</delete>
+
+
+	<delete id="deleteByUserId">
+		delete from task where task_user_id = #{userId}
+	</delete>
+
+
+</mapper>

@@ -1,0 +1,392 @@
+option java_package = "com.lys.protobuf";
+
+import "protocol_common.proto";
+
+import "protocol_pair.proto";
+
+// import "protocol_board.proto";
+// import "protocol_note.proto";
+
+
+
+
+
+
+
+
+message ImageMessageExtra
+{
+	optional int32 width = 1;
+	optional int32 height = 2;
+}
+
+
+// ---------------------- 测试 --------------------------
+message Request_Test
+{
+}
+
+message Response_Test
+{
+}
+
+
+
+message EnglishWordExample
+{
+	optional string english = 1;
+	optional string explain = 2;
+}
+
+
+message EnglishWord
+{
+	optional string word = 1;
+	optional string mark = 2;
+	optional string type = 3;
+	optional string mean = 4;
+	optional string think = 5;
+	optional string memory = 6;
+	repeated EnglishWordExample examples = 7;
+}
+
+
+
+message SvnDirObj
+{
+	optional bool isDir = 1;
+	optional string name = 2;
+	optional string md5 = 3;
+	repeated SvnDirObj objs = 4;
+}
+
+
+
+// ---------------------- 获取SVN目录 --------------------------
+message Request_SvnGetDir
+{
+	optional string path = 1;
+}
+
+message Response_SvnGetDir
+{
+	repeated SvnDirObj objs = 1;
+}
+
+
+
+
+message DynamicConfig
+{
+	optional bool showSnow = 1;
+	optional int32 snowCount = 2 [default=200];
+}
+
+
+
+
+
+
+
+// ---------------------- 获取配置 --------------------------
+message Request_GetConfig
+{
+}
+
+message Response_GetConfig
+{
+	optional string urlRoot = 1;
+	optional string root = 2;
+	optional string api = 3;
+	optional string upload = 4;
+	// optional string topicApi = 5;
+	// optional string server = 3;
+	// optional string search = 4;
+	optional int64 time = 5;
+	optional string svnUrl = 6;
+	optional string svnAccount = 7;
+	optional string svnPsw = 8;
+	optional bool zhixueErrorMode = 9; // 智学错模式
+}
+
+
+
+
+
+// ---------------------- 获取OSS TOKEN --------------------------
+message Request_GetOssToken
+{
+	optional string userId = 1;
+}
+
+message Response_GetOssToken
+{
+	optional string accessKeyId = 1;
+	optional string accessKeySecret = 2;
+	optional string securityToken = 3;
+	optional string expiration = 4;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+message TopicRecord
+{
+	optional string userId = 1;
+	optional string topicId = 2;
+	optional int32 fav = 3;
+	optional int32 result = 4;
+	optional int64 time = 5;
+}
+
+// ---------------------- xxxxxxxx --------------------------
+message Request_TopicRecordGetList
+{
+	optional string userId = 1;
+	optional int32 type = 2; // fav:1  result:2  error:3
+	optional int64 time = 3;
+	optional bool prev = 4;
+	optional int32 pageSize = 5;
+}
+
+message Response_TopicRecordGetList
+{
+	repeated TopicRecord topicRecords = 1;
+}
+
+// ---------------------- xxxxxxxx --------------------------
+message Request_TopicRecordGet
+{
+	optional string userId = 1;
+	optional string topicId = 2;
+}
+
+message Response_TopicRecordGet
+{
+	optional TopicRecord topicRecord = 1;
+}
+
+// ---------------------- xxxxxxxx --------------------------
+message Request_TopicRecordSetFav
+{
+	optional string userId = 1;
+	optional string topicId = 2;
+	optional int32 fav = 3;
+}
+
+message Response_TopicRecordSetFav
+{
+	optional TopicRecord topicRecord = 1;
+}
+
+// ---------------------- xxxxxxxx --------------------------
+message Request_TopicRecordSetResult
+{
+	optional string userId = 1;
+	optional string topicId = 2;
+	optional int32 result = 3;
+}
+
+message Response_TopicRecordSetResult
+{
+	optional TopicRecord topicRecord = 1;
+}
+
+// ---------------------- xxxxxxxx --------------------------
+message Request_TopicRecordDelete
+{
+	optional string userId = 1;
+	optional string topicId = 2;
+}
+
+message Response_TopicRecordDelete
+{
+}
+
+
+
+
+
+
+message FilePath
+{
+	optional string path = 1;
+	optional string md5 = 2;
+}
+
+// ---------------------- xxxxxxxx --------------------------
+message Request_FileDelete
+{
+	repeated string paths = 1;
+}
+
+message Response_FileDelete
+{
+}
+
+// ---------------------- xxxxxxxx --------------------------
+message Request_FileList
+{
+	optional string path = 1;
+}
+
+message Response_FileList
+{
+	optional string root = 1;
+	repeated FilePath paths = 2;
+}
+
+// ---------------------- xxxxxxxx --------------------------
+message Request_FileExists
+{
+	optional string path = 1;
+}
+
+message Response_FileExists
+{
+	optional bool exists = 1;
+}
+
+// ---------------------- xxxxxxxx --------------------------
+message Request_FileCopy
+{
+	optional string srcPath = 1;
+	optional string dstPath = 2;
+}
+
+message Response_FileCopy
+{
+}
+
+
+
+
+message Topic
+{
+	optional string id = 1;
+	optional int32 phase = 2;
+	optional int32 subject = 3;
+	optional string material = 4;
+	optional string style = 5;
+	optional int32 diff = 6;
+	optional string area = 7;
+	optional string year = 8;
+	repeated string knowledges = 9;
+	optional int32 zujuan = 10;
+	optional int32 zuoda = 11;
+	optional float defen = 12;
+	optional string nandu = 13;
+	repeated string chapters = 14;
+	optional string content = 15;
+	optional string answer = 16;
+	optional string parse = 17;
+	optional string contentUrl = 18;
+	optional string analyUrl = 19;
+}
+
+
+
+
+// ---------------------- 搜索题库 --------------------------
+message Request_SearchTopics
+{
+	optional string content = 1; // 搜索内容
+	optional int32 phase = 2;
+	optional int32 subject = 3;
+	optional int32 start = 4;
+	optional int32 rows = 5;
+	repeated Knowledge knowledges = 6; // 知识点列表
+	repeated Chapter chapters = 7; // 章节列表
+	repeated string styles = 8; // 题型
+	repeated int32 diffs = 9; // 难度
+	optional bool rand = 10; // 是否随机
+	optional string excludeId = 11; // 排除ID
+}
+
+message Response_SearchTopics
+{
+	optional int32 totalCount = 1;
+	repeated Topic topics = 2; // 题目
+}
+
+// ---------------------- xxxxxxxx --------------------------
+message Request_GetTopicStyles
+{
+	optional int32 phase = 1;
+	optional int32 subject = 2;
+}
+
+message Response_GetTopicStyles
+{
+	repeated ProblemStyle styles = 1;
+}
+
+// ---------------------- xxxxxxxx --------------------------
+message Request_GetKnowledges
+{
+	optional int32 phase = 1;
+	optional int32 subject = 2;
+}
+
+message Response_GetKnowledges
+{
+	repeated Knowledge knowledges = 1;
+}
+
+
+
+
+// optional string param1 = 4;
+// optional string param2 = 5;
+// optional string param3 = 6;
+// optional string param4 = 7;
+// optional string param5 = 8;
+// optional string param6 = 9;
+// optional string param7 = 10;
+// optional string param8 = 11;
+// optional string param9 = 12;
+
+
+message Event
+{
+	optional string userId = 1;
+	optional User user = 2;
+	// optional string id = 1;
+	optional string action = 3;
+	optional string target = 4;
+	optional string des = 5;
+	optional int64 time = 6;
+}
+
+// ---------------------- xxxxxxxx --------------------------
+message Request_AddEvent
+{
+	// optional string userId = 1;
+	optional Event event = 1;
+}
+
+message Response_AddEvent
+{
+}
+
+// ---------------------- xxxxxxxx --------------------------
+message Request_GetEventList
+{
+	optional string userId = 1;
+	repeated string actions = 2;
+	repeated string targets = 3;
+}
+
+message Response_GetEventList
+{
+	repeated Event events = 1;
+}

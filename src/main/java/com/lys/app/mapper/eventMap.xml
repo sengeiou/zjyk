@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lys.app.dao.EventDao">
+
+
+	<update id="createTable">
+        create table if not exists t_event(
+            event_user_id varchar(48),
+            event_action varchar(256),
+            event_target varchar(256),
+            event_des text,
+            event_time bigint default 0,
+            event_ts timestamp)
+    </update>
+
+
+	<resultMap id="eventResultMap" type="sEvent">
+		<result property="userId" column="event_user_id"/>
+		<result property="action" column="event_action"/>
+		<result property="target" column="event_target"/>
+		<result property="des" column="event_des"/>
+		<result property="time" column="event_time"/>
+	</resultMap>
+
+
+	<resultMap id="eventResultMap2" type="sEvent">
+		<result property="userId" column="event_user_id"/>
+		<result property="action" column="event_action"/>
+		<result property="target" column="event_target"/>
+		<result property="des" column="event_des"/>
+		<result property="time" column="event_time"/>
+		<association property="user" javaType="sUser">
+			<id property="id" column="user_id"/>
+			<result property="userType" column="user_user_type"/>
+			<result property="psw" column="user_psw"/>
+			<result property="name" column="user_name"/>
+			<result property="head" column="user_head"/>
+			<result property="token" column="user_token"/>
+			<result property="sex" column="user_sex"/>
+			<result property="grade" column="user_grade"/>
+			<result property="vipLevel" column="user_vip_level"/>
+			<result property="vipTime" column="user_vip_time"/>
+			<result property="phone" column="user_phone"/>
+			<result property="score" column="user_score"/>
+			<result property="cpId" column="user_cp_id"/>
+		</association>
+	</resultMap>
+
+
+
+	<select id="getList" resultMap="eventResultMap">
+		select * from t_event
+		where event_user_id = #{userId}
+		<if test="actions.size() > 0">
+			and event_action in
+			<foreach item="item" collection="actions" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+		<if test="targets.size() > 0">
+			and event_target in
+			<foreach item="item" collection="targets" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+	</select>
+
+
+	<select id="search" resultMap="eventResultMap2">
+		select * from t_event
+		left join user on t_event.event_user_id = user.user_id
+		<where>
+			<if test="userId !=null and userId.length() > 0">
+				and event_user_id = #{userId}
+			</if>
+			<if test="action !=null and action.length() > 0">
+				and event_action = #{action}
+			</if>
+			<if test="target !=null and target.length() > 0">
+				and event_target = #{target}
+			</if>
+			<if test="beginTime !=null">
+				and event_time >= #{beginTime}
+			</if>
+			<if test="endTime !=null">
+				and event_time &lt; #{endTime}
+			</if>
+			<if test="keywords !=null and keywords.size() > 0">
+				and
+				<foreach item="keyword" collection="keywords" open="(" separator="or" close=")">
+					event_des like concat('%', #{keyword}, '%')
+				</foreach>
+			</if>
+		</where>
+		order by event_time asc
+		limit #{offset}, #{rows}
+	</select>
+
+
+	<select id="searchCount" resultType="Integer">
+		select count(*) from t_event
+		<where>
+			<if test="userId !=null and userId.length() > 0">
+				and event_user_id = #{userId}
+			</if>
+			<if test="action !=null and action.length() > 0">
+				and event_action = #{action}
+			</if>
+			<if test="target !=null and target.length() > 0">
+				and event_target = #{target}
+			</if>
+			<if test="beginTime !=null">
+				and event_time >= #{beginTime}
+			</if>
+			<if test="endTime !=null">
+				and event_time &lt; #{endTime}
+			</if>
+			<if test="keywords !=null and keywords.size() > 0">
+				and
+				<foreach item="keyword" collection="keywords" open="(" separator="or" close=")">
+					event_des like concat('%', #{keyword}, '%')
+				</foreach>
+			</if>
+		</where>
+	</select>
+
+
+	<insert id="insert">
+        insert into t_event(
+            event_user_id,
+            event_action,
+            event_target,
+            event_des,
+            event_time)
+        value(
+            #{userId},
+            #{action},
+            #{target},
+            #{des},
+            #{time})
+    </insert>
+
+
+</mapper>

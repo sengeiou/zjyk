@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lys.app.dao.UserGroupDao">
+
+
+	<update id="createTable">
+        create table if not exists user_group(
+            user_group_id varchar(48),
+            user_group_name varchar(100),
+            user_group_user_ids text,
+            user_group_ts timestamp)
+    </update>
+
+
+	<resultMap id="userGroupResultMap" type="sUserGroup">
+		<id property="id" column="user_group_id"/>
+		<result property="name" column="user_group_name"/>
+		<result property="userIds" column="user_group_user_ids" typeHandler="com.lys.app.typehandler.ListStringTypeHandler"/>
+	</resultMap>
+
+
+	<select id="get" resultMap="userGroupResultMap">
+        select * from user_group
+        where user_group_id = #{id}
+    </select>
+
+
+	<select id="getList" resultMap="userGroupResultMap">
+        select * from user_group
+    </select>
+
+
+	<insert id="insert">
+        insert into user_group(
+            user_group_id,
+            user_group_name,
+            user_group_user_ids)
+        value(
+            #{id},
+            #{name},
+            #{userIds, typeHandler=com.lys.app.typehandler.ListStringTypeHandler})
+    </insert>
+
+
+	<update id="update">
+		update user_group
+		<set>
+			user_group_name=#{name},
+			user_group_user_ids=#{userIds, typeHandler=com.lys.app.typehandler.ListStringTypeHandler}
+		</set>
+		where user_group_id = #{id}
+	</update>
+
+
+	<delete id="delete">
+		delete from user_group where user_group_id = #{id}
+	</delete>
+
+
+</mapper>

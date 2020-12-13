@@ -1,0 +1,299 @@
+option java_package = "com.lys.protobuf";
+
+import "protocol_common.proto";
+
+
+message ZXTopic
+{
+	optional string id = 1;
+	optional string content = 2;
+	optional string answer = 3;
+	optional string parse = 4;
+	repeated string knowledges = 5;
+	optional string style = 6;
+	optional int32 zujuan = 7;
+	optional int32 zuoda = 8;
+	optional string defen = 9;
+	optional string nandu = 10;
+	optional string phase = 11;
+	optional string subject = 12;
+	optional string material = 13;
+	optional string chapterPath = 14;
+	optional string diff = 15;
+	optional string area = 16;
+	optional string year = 17;
+	optional string checkResult = 18;
+}
+
+
+
+message ZXKnowledgeTreeNode
+{
+	optional int32 index = 1;
+	optional string name = 2;
+	repeated ZXKnowledgeTreeNode knowledges = 3;
+}
+
+message ZXKnowledgeTree
+{
+	repeated ZXKnowledgeTreeNode knowledges = 1;
+	optional string phase = 2;
+	optional string subject = 3;
+}
+
+
+
+
+message ZXChapterTreeNode
+{
+	optional int32 index = 1;
+	optional string name = 2;
+	repeated ZXChapterTreeNode chapters = 3;
+	// optional ZXChapterTreeNode parent = 4;
+}
+
+message ZXChapterTree
+{
+	repeated ZXChapterTreeNode chapters = 1;
+	optional string phase = 2;
+	optional string subject = 3;
+	optional string material = 4;
+}
+
+message ZXTask
+{
+	optional string id = 1;
+	optional string phase = 2;
+	optional string subject = 3;
+	optional string material = 4;
+	// optional string chapterPath = 5;
+	// optional string style = 6;
+	optional string diff = 5;
+	optional string area = 6;
+	optional string year = 7;
+	optional string currChapterPath = 8;
+	optional int32 currPage = 9;
+	optional int32 totalPage = 10;
+	optional string deviceId = 11;
+}
+
+
+
+// ---------------------- XXXXXX --------------------------
+message Request_ZXCreateTask
+{
+	optional string phase = 1;
+	optional string subject = 2;
+	optional string material = 3;
+	// repeated ZXChapterTreeNode chapters = 8;
+	// repeated string styles = 4;
+	repeated string diffs = 4;
+	repeated string areas = 5;
+	repeated string years = 6;
+}
+
+message Response_ZXCreateTask
+{
+}
+
+// ---------------------- XXXXXX --------------------------
+message Request_ZXPullTask
+{
+	optional string phase = 1;
+	optional string subject = 2;
+	optional string material = 3;
+	optional string deviceId = 4;
+}
+
+message Response_ZXPullTask
+{
+	optional ZXTask task = 1;
+}
+
+// ---------------------- XXXXXX --------------------------
+message Request_ZXCatchPageOver
+{
+	optional string phase = 1;
+	optional string subject = 2;
+	optional string material = 3;
+	// optional string chapterPath = 4;
+	// optional string style = 5;
+	optional string diff = 4;
+	optional string area = 5;
+	optional string year = 6;
+	optional string currChapterPath = 7;
+	optional int32 currPage = 8;
+	optional string deviceId = 9;
+}
+
+message Response_ZXCatchPageOver
+{
+}
+
+// ---------------------- XXXXXX --------------------------
+message Request_ZXCatchOver
+{
+	optional string phase = 1;
+	optional string subject = 2;
+	optional string material = 3;
+	// optional string chapterPath = 4;
+	// optional string style = 5;
+	optional string diff = 4;
+	optional string area = 5;
+	optional string year = 6;
+	optional string deviceId = 7;
+}
+
+message Response_ZXCatchOver
+{
+}
+
+
+
+
+// ---------------------- XXXXXX --------------------------
+message Request_ZXGenKnowledgeTree
+{
+	optional ZXKnowledgeTree knowledgeTree = 1;
+}
+
+message Response_ZXGenKnowledgeTree
+{
+	repeated Knowledge knowledges = 1;
+}
+
+
+// ---------------------- XXXXXX --------------------------
+message Request_ZXGenChapterTree
+{
+	optional ZXChapterTree chapterTree = 1;
+}
+
+message Response_ZXGenChapterTree
+{
+	repeated Chapter chapters = 1;
+}
+
+// ---------------------- XXXXXX --------------------------
+message Request_ZXAddTopic
+{
+	repeated ZXTopic topics = 1;
+}
+
+message Response_ZXAddTopic
+{
+	repeated int32 addIndexs = 1;
+	repeated int32 repeatIndexs = 2;
+}
+
+
+message ZXAccount
+{
+	optional string account = 1;
+	optional string psw = 2;
+	optional string state = 3;
+	optional string deviceId = 4;
+}
+
+
+// ---------------------- XXXXXX --------------------------
+message Request_ZXPullAccount
+{
+	optional string deviceId = 1;
+}
+
+message Response_ZXPullAccount
+{
+	optional string account = 1;
+	optional string psw = 2;
+}
+
+
+// ---------------------- XXXXXX --------------------------
+message Request_ZXReportAccount
+{
+	optional string account = 1;
+	optional string state = 2;
+}
+
+message Response_ZXReportAccount
+{
+}
+
+
+
+
+message ZXDeviceInfo
+{
+	optional string deviceId = 1;
+	optional string host = 2;
+	optional string addr = 3;
+	optional string xForwardedFor = 4;
+	optional string xForwardedForPound = 5;
+	optional string hostIp = 6;
+	optional SohuIp netIp = 7;
+	optional int32 versionCode = 8;
+	optional int64 lastTickTime = 9;
+	optional int32 capacity = 10;
+	optional int64 dtTime = 11;
+}
+
+// ---------------------- XXXXXX --------------------------
+message Request_ZXDeviceList
+{
+	optional int32 keepScreen = 1 [default=-1]; // 要设置的值
+}
+
+message Response_ZXDeviceList
+{
+	optional string seriveIp = 1;
+	optional bool keepScreen = 2;
+	repeated ZXDeviceInfo devices = 3;
+}
+
+// ---------------------- XXXXXX --------------------------
+message Request_ZXTickInfo
+{
+	optional string deviceId = 1;
+	optional string hostIp = 2;
+	optional SohuIp netIp = 3;
+	optional int32 versionCode = 4;
+	optional int32 capacity = 5;
+	optional int64 dtTime = 6;
+}
+
+message Response_ZXTickInfo
+{
+	optional bool keepScreen = 1;
+	optional string clientIp = 2;
+	optional string seriveIp = 3;
+}
+
+
+
+
+
+// ---------------------- XXXXXX --------------------------
+message Request_ZXProcessJuan
+{
+	optional string phase = 1;
+	optional string subject = 2;
+	optional string material = 3;
+}
+
+message Response_ZXProcessJuan
+{
+}
+
+
+// ---------------------- XXXXXX --------------------------
+message Request_ZXProcessJuan2
+{
+	optional string phase = 1;
+	optional string subject = 2;
+	optional string material = 3;
+}
+
+message Response_ZXProcessJuan2
+{
+}

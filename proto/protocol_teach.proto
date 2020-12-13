@@ -1,0 +1,156 @@
+option java_package = "com.lys.protobuf";
+
+// import "protocol_common.proto";
+
+import "protocol_pair.proto";
+
+
+
+message TeachPage
+{
+	optional string name = 1;
+	optional int32 index = 2;
+	optional int64 time = 3;
+}
+
+
+
+
+message TeachRecord
+{
+	optional string teachId = 1;
+	optional string userId = 2;
+	optional bool isHost = 3;
+	optional int32 targetCount = 4;
+	repeated string targetIds = 5;
+	repeated User targets = 6;
+	optional string taskId = 7;
+	optional PTask task = 8;
+	optional int64 startTime = 9;
+	optional int64 overTime = 10;
+	repeated TeachPage teachPages = 11;
+
+	optional string confirmMsg = 12;
+
+	optional string questionMatch = 13;
+	optional string questionDiff = 14;
+	optional string questionGot = 15;
+	optional string questionQuality = 16;
+	optional string questionLike = 17;
+
+	optional string questionHot = 18;
+	optional string questionMind = 19;
+	optional string questionLogic = 20;
+	optional string questionOther = 21;
+}
+
+
+
+
+// ---------------------- xxxxxxx --------------------------
+message Request_TeachStart
+{
+	optional string teachId = 1;
+	optional string userId = 2;
+	repeated string targetIds = 3;
+	optional string taskId = 4;
+}
+
+message Response_TeachStart
+{
+}
+
+
+
+
+// ---------------------- xxxxxxx --------------------------
+message Request_TeachOverByTeacher
+{
+	optional string teachId = 1;
+	optional string userId = 2;
+	repeated TeachPage teachPages = 3;
+}
+
+message Response_TeachOverByTeacher
+{
+}
+
+// ---------------------- xxxxxxx --------------------------
+message Request_TeachQuestionByTeacher
+{
+	optional string teachId = 1;
+	optional string userId = 2;
+	optional string questionHot = 3;
+	optional string questionMind = 4;
+	optional string questionLogic = 5;
+	optional string questionOther = 6;
+}
+
+message Response_TeachQuestionByTeacher
+{
+}
+
+
+
+
+
+
+
+// ---------------------- xxxxxxx --------------------------
+message Request_TeachOverByStudent
+{
+	optional string teachId = 1;
+	optional string userId = 2;
+	optional string targetId = 3;
+}
+
+message Response_TeachOverByStudent
+{
+}
+
+// ---------------------- xxxxxxx --------------------------
+message Request_TeachConfirmByStudent
+{
+	optional string teachId = 1;
+	optional string userId = 2;
+	optional string targetId = 3;
+	optional string confirmMsg = 4;
+}
+
+message Response_TeachConfirmByStudent
+{
+}
+
+// ---------------------- xxxxxxx --------------------------
+message Request_TeachQuestionByStudent
+{
+	optional string teachId = 1;
+	optional string userId = 2;
+	optional string targetId = 3;
+	optional string questionMatch = 4;
+	optional string questionDiff = 5;
+	optional string questionGot = 6;
+	optional string questionQuality = 7;
+	optional string questionLike = 8;
+}
+
+message Response_TeachQuestionByStudent
+{
+}
+
+
+
+
+
+// ---------------------- xxxxxxx --------------------------
+message Request_TeachGetList
+{
+	optional string userId = 1;
+	optional int64 fromTime = 2;
+	optional int64 toTime = 3;
+}
+
+message Response_TeachGetList
+{
+	repeated TeachRecord teachRecords = 1;
+}

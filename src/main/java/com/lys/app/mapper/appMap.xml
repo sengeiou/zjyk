@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lys.app.dao.AppDao">
+
+
+	<update id="createTable">
+        create table if not exists t_app(
+            app_pkg_name varchar(100),
+            app_channel varchar(100),
+            app_version_code int default 0,
+            app_version_name varchar(100),
+            app_probability float not null default 1,
+            app_name varchar(100),
+            app_size bigint default 0,
+            app_apk_url varchar(256),
+            app_ico_url varchar(256),
+            app_des text,
+            app_ts timestamp)
+    </update>
+
+
+	<resultMap id="appResultMap" type="sApp">
+		<id property="pkgName" column="app_pkg_name"/>
+		<id property="channel" column="app_channel"/>
+		<result property="versionCode" column="app_version_code"/>
+		<result property="versionName" column="app_version_name"/>
+		<result property="probability" column="app_probability"/>
+		<result property="name" column="app_name"/>
+		<result property="size" column="app_size"/>
+		<result property="apkUrl" column="app_apk_url"/>
+		<result property="icoUrl" column="app_ico_url"/>
+		<result property="des" column="app_des"/>
+	</resultMap>
+
+
+	<select id="get" resultMap="appResultMap">
+        select * from t_app
+        where app_pkg_name = #{pkgName} and app_channel = #{channel}
+    </select>
+
+
+	<select id="getList" resultMap="appResultMap">
+        select * from t_app
+    </select>
+
+
+	<insert id="insert">
+        insert into t_app(
+            app_pkg_name,
+            app_channel,
+            app_version_code,
+            app_version_name,
+            app_probability,
+            app_name,
+            app_size,
+            app_apk_url,
+            app_ico_url,
+            app_des)
+        value(
+            #{pkgName},
+            #{channel},
+            #{versionCode},
+            #{versionName},
+            #{probability},
+            #{name},
+            #{size},
+            #{apkUrl},
+            #{icoUrl},
+            #{des})
+    </insert>
+
+
+	<update id="update">
+		update t_app
+		<set>
+			app_version_code=#{versionCode},
+			app_version_name=#{versionName},
+			app_probability=#{probability},
+			app_name=#{name},
+			app_size=#{size},
+			app_apk_url=#{apkUrl},
+			app_ico_url=#{icoUrl},
+			app_des=#{des}
+		</set>
+		where app_pkg_name = #{pkgName} and app_channel = #{channel}
+	</update>
+
+
+	<delete id="delete">
+		delete from t_app where app_pkg_name = #{pkgName} and app_channel = #{channel}
+	</delete>
+
+
+</mapper>

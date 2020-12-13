@@ -1,0 +1,53 @@
+body {
+    background-color: #f1f1f1;
+    /*background-color: skyblue;*/
+    padding: 0;
+    margin: 0;
+    border: 0;
+}
+
+
+div.nav {
+    background-color: white;
+    height: 60px;
+    display: flex;
+    /*direction: rtl;*/
+    align-items: center;
+}
+
+a.logo {
+    margin-left: 50px;
+}
+
+a.nav {
+    margin-left: 50px;
+    font-size: 1.5em;
+}
+
+
+div.content {
+    position: absolute;
+    width: 100%;
+    top: 65px;
+    bottom: 30px;
+    /*left: 0.5%;*/
+}
+
+iframe.content {
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    border: 0;
+}
+
+
+
+
+div.beian {
+    position: absolute;
+    bottom: 6px;
+    width: 100%;
+    text-align: center;
+    /*left: 0.5%;*/
+}

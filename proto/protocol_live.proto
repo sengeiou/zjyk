@@ -1,0 +1,80 @@
+option java_package = "com.lys.protobuf";
+
+// import "protocol_common.proto";
+
+enum LiveType
+{
+	LiveType_Private = 0;
+	LiveType_Public = 1;
+	LiveType_PrivateRecord = 2;
+	LiveType_PublicRecord = 3;
+}
+
+message LiveTask
+{
+	optional string id = 1;
+	optional string actorId = 2;
+	optional string name = 3;
+	optional string des = 4;
+	optional string cover = 5;
+	optional string video = 6;
+	optional int32 duration = 7;
+	optional string taskId = 8;
+	optional LiveType type = 9 [default=LiveType_Private];
+	repeated string userIds = 10;
+	optional int64 startTime = 11;
+}
+
+// ---------------------- xxxxxxxxxxxxx --------------------------
+message Request_LiveGetAll
+{
+}
+
+message Response_LiveGetAll
+{
+	repeated LiveTask lives = 1;
+}
+
+// ---------------------- xxxxxxxxxxxxx --------------------------
+message Request_LiveGetList
+{
+	optional string userId = 1;
+}
+
+message Response_LiveGetList
+{
+	repeated LiveTask lives = 1;
+}
+
+
+// ---------------------- xxxxxxxxxxxxx --------------------------
+message Request_LiveAddModify
+{
+	optional LiveTask live = 1;
+}
+
+message Response_LiveAddModify
+{
+}
+
+
+// ---------------------- xxxxxxxxxxxxx --------------------------
+message Request_LiveDelete
+{
+	optional string id = 1;
+}
+
+message Response_LiveDelete
+{
+}
+
+
+// ---------------------- xxxxxxxxxxxxx --------------------------
+message Request_LiveCopy
+{
+	optional string id = 1;
+}
+
+message Response_LiveCopy
+{
+}

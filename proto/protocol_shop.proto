@@ -1,0 +1,232 @@
+option java_package = "com.lys.protobuf";
+
+// import "protocol_common.proto";
+
+// import "protocol_board.proto";
+// import "protocol_note.proto";
+import "protocol_pair.proto";
+
+
+
+
+
+enum MatterType
+{
+	MatterType_Class = 1; // 精品课
+	MatterType_Pair = 2; // 一对一
+}
+
+enum MatterPlace
+{
+	MatterPlace_Default = 1;
+	MatterPlace_Main = 2;
+	MatterPlace_Banner = 3;
+}
+
+message MatterHour
+{
+	optional float hourBuy = 1;
+	optional float hourGive = 2;
+}
+
+enum MatterDetailType
+{
+	MatterDetailType_Img = 1; // 
+	MatterDetailType_Video = 2; // 
+	MatterDetailType_Task = 3; // 
+}
+
+message MatterDetail
+{
+	optional MatterDetailType type = 1 [default=MatterDetailType_Img];
+	optional string imgUrl = 2;
+	optional int32 imgWidth = 3;
+	optional int32 imgHeight = 4;
+	optional string videoUrl = 5;
+	optional int64 videoDuration = 6;
+	optional PTask task = 7;
+}
+
+
+
+
+message Matter
+{
+	optional string id = 1;
+	optional string name = 2;
+	optional string userId = 3; // 负责人
+	optional MatterType type = 4 [default=MatterType_Class];
+	optional MatterPlace place = 5 [default=MatterPlace_Default];
+	optional string cover = 6;
+	optional string banner = 7;
+	optional int32 buyCount = 8;
+	optional int32 moneyRaw = 9;
+	optional int32 money = 10;
+	repeated MatterHour hours = 11;
+	optional int64 sort = 12;
+	optional bool invalid = 13;
+	repeated MatterDetail details = 14;
+}
+
+enum MatterListType
+{
+	MatterListType_Home = 1; // 
+	MatterListType_Class = 2; // 
+	MatterListType_Pair = 3; // 
+}
+
+// ---------------------- 获取物料列表 --------------------------
+message Request_GetMatterList
+{
+	optional MatterListType type = 1 [default=MatterListType_Home];
+	optional bool containInvalid = 2; // 是否包含无效
+	optional int64 sort = 3;
+	optional bool prev = 4;
+	optional int32 pageSize = 5;
+}
+
+message Response_GetMatterList
+{
+	repeated Matter matters = 1;
+}
+
+// ---------------------- xxxxxxxx --------------------------
+message Request_AddModifyMatter
+{
+	optional Matter matter = 1;
+}
+
+message Response_AddModifyMatter
+{
+}
+
+// ---------------------- xxxxxxxx --------------------------
+message Request_SwapMatter
+{
+	optional Matter matter1 = 1;
+	optional Matter matter2 = 2;
+}
+
+message Response_SwapMatter
+{
+}
+
+// ---------------------- xxxxxxxx --------------------------
+message Request_DeleteMatter
+{
+	optional string matterId = 1;
+}
+
+message Response_DeleteMatter
+{
+}
+
+
+
+
+
+
+
+
+message Buy
+{
+	optional string userId = 1;
+	optional Matter matter = 2;
+	optional float hourBuy = 3;
+	optional float hourGive = 4;
+}
+
+// ---------------------- 获取已购买列表 --------------------------
+message Request_GetBuyList
+{
+	optional string userId = 1;
+	optional string matterId = 2;
+}
+
+message Response_GetBuyList
+{
+	repeated Buy buys = 1;
+}
+
+// ---------------------- xxxxxxxx --------------------------
+message Request_AddModifyBuy
+{
+	optional string userId = 1;
+	optional string matterId = 2;
+	optional float hourBuy = 3;
+	optional float hourGive = 4;
+}
+
+message Response_AddModifyBuy
+{
+	repeated Buy buys = 1;
+}
+
+// ---------------------- xxxxxxxx --------------------------
+message Request_DeleteBuy
+{
+	optional string userId = 1;
+	optional string matterId = 2;
+}
+
+message Response_DeleteBuy
+{
+	repeated Matter matters = 1;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+message Comment
+{
+	optional string id = 1;
+	optional string matterId = 2;
+	optional User user = 3;
+	optional int32 star = 4;
+	optional string text = 5;
+	optional int64 time = 6;
+	optional bool pass = 7;
+}
+
+// ---------------------- xxxxxxxx --------------------------
+message Request_GetCommentList
+{
+	optional string matterId = 1;
+	optional bool containAll = 2; // 包含所有（尚未通过的）
+	optional int64 time = 3;
+	optional bool prev = 4;
+	optional int32 pageSize = 5;
+}
+
+message Response_GetCommentList
+{
+	repeated Comment comments = 1;
+}
+
+// ---------------------- xxxxxxxx --------------------------
+message Request_AddModifyComment
+{
+	optional Comment comment = 1;
+}
+
+message Response_AddModifyComment
+{
+}
+
+// ---------------------- xxxxxxxx --------------------------
+message Request_DeleteComment
+{
+	optional string commentId = 1;
+}
+
+message Response_DeleteComment
+{
+}

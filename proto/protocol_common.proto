@@ -1,0 +1,334 @@
+option java_package = "com.lys.protobuf";
+
+enum HandleId
+{
+	HandleId_Dummy = 0;
+
+	HandleId_Test = 1;
+
+
+
+
+	HandleId_GetConfig = 30000; // 这个接口号不能轻易变，否则旧包启动不了
+
+	HandleId_GetOssToken = 30010;
+
+	HandleId_GetAppInfo = 30021; // 这个接口号不能轻易变，否则无法更新
+	HandleId_GetAppInfoList = 30022;
+	HandleId_SetAppInfo = 30023;
+
+	HandleId_UserPhoneCode = 30026;
+	HandleId_UserReg = 30027;
+	HandleId_UserLogin = 30011;
+	HandleId_GetUser = 30012;
+	HandleId_ModifyHead = 30013;
+	HandleId_ModifyName = 30019;
+	HandleId_ModifySex = 30020;
+	HandleId_ModifyGrade = 30024;
+	HandleId_ModifyPsw = 30025;
+	HandleId_GetUserList = 30014;
+	HandleId_AddUser = 30015;
+	HandleId_DeleteUser = 30016;
+	HandleId_SetVip = 30017;
+	HandleId_SetCp = 30018;
+
+	HandleId_GetFriendList = 30051;
+	HandleId_AddFriend = 30052;
+	HandleId_DeleteFriend = 30053;
+	HandleId_ModifyFriendGroup = 30054;
+
+	HandleId_FindTask = 30030;
+	HandleId_GetTask = 30031;
+	HandleId_GetTaskList = 30032;
+	HandleId_CreateTask = 30033;
+	HandleId_SendTask = 30034;
+	HandleId_DeleteTask = 30035;
+	HandleId_GetTaskFileVersion = 30036;
+	HandleId_GetTaskForWeb = 30037;
+	HandleId_SetTaskState = 30038;
+	HandleId_SetTaskNote = 30039;
+	HandleId_ModifyTask = 30040;
+	HandleId_ModifyTaskComment = 30041;
+	HandleId_AddTaskScore = 30042;
+	HandleId_SetTaskOpen = 30043;
+	HandleId_RandomOpenTask = 30044;
+
+	HandleId_FileDelete = 30091;
+	HandleId_FileList = 30092;
+	HandleId_FileExists = 30093;
+	HandleId_FileCopy = 30094;
+
+
+	HandleId_SearchTopics = 30100;
+	HandleId_GetTopicStyles = 30101;
+	HandleId_GetKnowledges = 30102;
+
+
+	HandleId_SvnGetDir = 30200;
+
+	HandleId_TopicRecordGetList = 30301;
+	HandleId_TopicRecordGet = 30302;
+	HandleId_TopicRecordSetFav = 30303;
+	HandleId_TopicRecordSetResult = 30304;
+	HandleId_TopicRecordDelete = 30305;
+
+
+	HandleId_TeachStart = 30401;
+	HandleId_TeachOverByTeacher = 30402;
+	HandleId_TeachQuestionByTeacher = 30403;
+	HandleId_TeachOverByStudent = 30404;
+	HandleId_TeachConfirmByStudent = 30405;
+	HandleId_TeachQuestionByStudent = 30406;
+	HandleId_TeachGetList = 30407;
+
+	HandleId_GetMatterList = 30600;
+	HandleId_AddModifyMatter = 30601;
+	HandleId_SwapMatter = 30602;
+	HandleId_DeleteMatter = 30603;
+
+	HandleId_GetBuyList = 30610;
+	HandleId_AddModifyBuy = 30611;
+	HandleId_DeleteBuy = 30612;
+
+	HandleId_GetCommentList = 30620;
+	HandleId_AddModifyComment = 30621;
+	HandleId_DeleteComment = 30622;
+
+
+
+	HandleId_GetGoodsList = 30700;
+	HandleId_AddModifyGoods = 30701;
+	HandleId_SwapGoods = 30702;
+	HandleId_DeleteGoods = 30703;
+
+	HandleId_GetOrderList = 30710;
+	HandleId_AddOrder = 30711;
+	HandleId_ModifyOrderState = 30712;
+
+
+	HandleId_GetTaskGroupList = 30720;
+	HandleId_AddModifyTaskGroup = 30721;
+	HandleId_SwapTaskGroup = 30722;
+	HandleId_DeleteTaskGroup = 30723;
+
+	HandleId_GetTeachList = 30730;
+	HandleId_ModifyTeach = 30731;
+
+	HandleId_AddEvent = 30800;
+	HandleId_GetEventList = 30801;
+
+	HandleId_LiveGetAll = 30901;
+	HandleId_LiveGetList = 30902;
+	HandleId_LiveAddModify = 30903;
+	HandleId_LiveDelete = 30904;
+	HandleId_LiveCopy = 30905;
+
+	HandleId_UserGroupGetAll = 30951;
+	HandleId_UserGroupAddModify = 30952;
+	HandleId_UserGroupDelete = 30953;
+
+	HandleId_ExamPointGetAll = 31001;
+	HandleId_ExamPointAddModify = 31002;
+	HandleId_ExamPointDelete = 31003;
+
+	HandleId_ExamPaperGetAll = 31101;
+	HandleId_ExamPaperAddModify = 31102;
+	HandleId_ExamPaperDelete = 31103;
+	HandleId_ExamPaperDetail = 31104;
+
+	HandleId_ExamRecordGetAll = 31201;
+	HandleId_ExamRecordAddModify = 31202;
+	HandleId_ExamRecordDelete = 31203;
+	HandleId_ExamRecordDetail = 31204;
+
+	HandleId_ZXCreateTask = 40011;
+	HandleId_ZXPullTask = 40012;
+	HandleId_ZXCatchPageOver = 40013;
+	HandleId_ZXCatchOver = 40014;
+	HandleId_ZXGenKnowledgeTree = 40015;
+	HandleId_ZXGenChapterTree = 40016;
+	HandleId_ZXAddTopic = 40017;
+	HandleId_ZXPullAccount = 40018;
+	HandleId_ZXReportAccount = 40019;
+	HandleId_ZXDeviceList = 40020;
+	HandleId_ZXTickInfo = 40021;
+	HandleId_ZXProcessJuan = 40022;
+	HandleId_ZXProcessJuan2 = 40023;
+
+	HandleId_GetServerLog = 50100;
+	HandleId_GetServerState = 50101;
+	HandleId_SetServerState = 50104;
+	HandleId_GetTimeRecord = 50103;
+	HandleId_GetServerUploadingList = 50102;
+}
+
+
+
+
+message SohuIp
+{
+	optional string cip = 1;
+	optional string cid = 2;
+	optional string cname = 3;
+}
+
+
+
+// 阶段
+enum Phase
+{
+	// Phase_Xiao = 1; // 小学
+	Phase_Chu = 2; // 初中
+	Phase_Gao = 3; // 高中
+}
+
+// 科目
+enum Subject
+{
+	Subject_All = -1; // 全部
+	Subject_Any = 0; // 未分科
+	Subject_Yu = 1; // 语文
+	Subject_Shu = 2; // 数学
+	Subject_Wai = 3; // 英语
+	Subject_Li = 4; // 物理
+	Subject_Hua = 5; // 化学
+	Subject_Di = 6; // 地理
+	Subject_Shi = 7; // 历史
+	Subject_Zhen = 8; // 政治
+	Subject_Shen = 9; // 生物
+	Subject_WenHua = 10; // 文化
+}
+
+
+// 题目类型
+enum ProblemType
+{
+	ProblemType_SingleSelect = 1; // 单选
+	ProblemType_Fill = 2; // 填空题
+	ProblemType_Answer = 3; // 主观题
+	ProblemType_MultiSelect = 4; // 多选
+	ProblemType_Judge = 5; // 判断题
+}
+
+
+
+
+
+enum ErrorCode
+{
+	ErrorCode_unknown_error = -1; // "未知错误！"
+	ErrorCode_AccountNotExist = -2;
+	ErrorCode_PswError = -3;
+}
+
+
+message Protocol
+{
+	optional int32 code = 1;
+	optional int32 handleId = 2;
+	optional string msg = 3;
+	optional string data = 4;
+	optional string token = 5;
+	optional string deviceId = 6;
+	optional string userId = 7;
+	optional string userName = 8;
+}
+
+
+
+
+message NetPicInfo
+{
+	optional bool isMovie = 1;
+	optional string type = 2;
+	optional string name = 3;
+	optional string smallUrl = 4;
+	optional int32 smallWidth = 5;
+	optional int32 smallHeight = 6;
+	optional string bigUrl = 7;
+	optional int32 bigWidth = 8;
+	optional int32 bigHeight = 9;
+	optional string videoUrl = 10;
+	optional int64 duration = 11;
+}
+
+
+
+enum ClipboardType
+{
+	ClipboardType_BoardPhoto = 1;
+	ClipboardType_BoardPages = 2;
+}
+
+message Clipboard
+{
+	optional ClipboardType type = 1 [default=ClipboardType_BoardPhoto];
+	optional string data1 = 2;
+	optional string data2 = 3;
+}
+
+
+
+
+message ChoiceItem
+{
+	optional string name = 1; // 
+	optional int32 number = 2; // 计数
+	optional int32 value = 3; // 
+}
+
+message SubjectCount
+{
+	optional int32 subject = 1; // 科目
+	optional int32 number = 2; // 科目计数
+}
+
+message Knowledge
+{
+	optional string code = 1; // 知识点编号
+	optional string name = 2; // 知识点名称
+	optional int32 topicCount = 3; // 
+	repeated Knowledge nodes = 4; // 子节点
+	optional int32 level = 5; // 前端预留
+	optional bool isOpen = 6; // 前端预留
+	optional Knowledge parent = 7; // 前端预留
+	optional int32 state = 8; // 前端预留
+}
+
+message Chapter
+{
+	optional string code = 1; // 章节编号
+	optional string name = 2; // 章节名称
+	optional int32 topicCount = 3; // 
+	repeated Chapter nodes = 4; // 子节点
+	optional int32 level = 5; // 前端预留
+	optional bool isOpen = 6; // 前端预留
+	optional Chapter parent = 7; // 前端预留
+	optional int32 state = 8; // 前端预留
+}
+
+message TopicFilter
+{
+	optional int32 subject = 1; // 科目
+	repeated string knowledgeCodes = 2; // 
+	optional int32 style = 3; // 
+	optional int32 diff = 4; // 
+}
+
+
+
+
+
+
+
+message ProblemStyle
+{
+	optional string name = 1;
+	optional bool isSelect = 2; // 是否是选择题
+}
+
+message ProblemDiff
+{
+	optional int32 diff = 1;
+	optional string name = 2;
+}

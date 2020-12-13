@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lys.app.dao.ExamPaperDao">
+
+
+	<update id="createTable">
+        create table if not exists t_exam_paper(
+            exam_paper_id varchar(48),
+            exam_paper_name text,
+            exam_paper_time bigint default 0,
+            exam_paper_files text,
+            exam_paper_note text,
+            exam_paper_topics text,
+            exam_paper_ts timestamp)
+    </update>
+
+
+	<resultMap id="examPaperResultMap" type="sExamPaper">
+		<id property="id" column="exam_paper_id"/>
+		<result property="name" column="exam_paper_name"/>
+		<result property="time" column="exam_paper_time"/>
+		<result property="files" column="exam_paper_files" typeHandler="com.lys.app.typehandler.ListStringTypeHandler"/>
+		<result property="note" column="exam_paper_note"/>
+		<result property="topics" column="exam_paper_topics" typeHandler="com.lys.app.typehandler.ListSExamPaperTopicTypeHandler"/>
+	</resultMap>
+
+
+	<select id="get" resultMap="examPaperResultMap">
+        select * from t_exam_paper
+        where exam_paper_id = #{id}
+    </select>
+
+
+	<select id="getList" resultMap="examPaperResultMap">
+        select * from t_exam_paper
+    </select>
+
+
+	<select id="search" resultMap="examPaperResultMap">
+		select * from t_exam_paper
+		<where>
+			<if test="keywords !=null and keywords.size() > 0">
+				and
+				<foreach item="keyword" collection="keywords" open="(" separator="or" close=")">
+					exam_paper_name like concat('%', #{keyword}, '%')
+				</foreach>
+			</if>
+		</where>
+		limit #{offset}, #{rows}
+	</select>
+
+
+	<select id="searchCount" resultType="Integer">
+		select count(*) from t_exam_paper
+		<where>
+			<if test="keywords !=null and keywords.size() > 0">
+				and
+				<foreach item="keyword" collection="keywords" open="(" separator="or" close=")">
+					exam_paper_name like concat('%', #{keyword}, '%')
+				</foreach>
+			</if>
+		</where>
+	</select>
+
+
+	<insert id="insert">
+        insert into t_exam_paper(
+            exam_paper_id,
+            exam_paper_name,
+            exam_paper_time,
+            exam_paper_files,
+            exam_paper_note,
+            exam_paper_topics)
+        value(
+            #{id},
+            #{name},
+            #{time},
+            #{files, typeHandler=com.lys.app.typehandler.ListStringTypeHandler},
+            #{note},
+            #{topics, typeHandler=com.lys.app.typehandler.ListSExamPaperTopicTypeHandler})
+    </insert>
+
+
+	<update id="update">
+		update t_exam_paper
+		<set>
+			exam_paper_name=#{name},
+			exam_paper_time=#{time},
+			exam_paper_files=#{files, typeHandler=com.lys.app.typehandler.ListStringTypeHandler},
+			exam_paper_note=#{note},
+			exam_paper_topics=#{topics, typeHandler=com.lys.app.typehandler.ListSExamPaperTopicTypeHandler}
+		</set>
+		where exam_paper_id = #{id}
+	</update>
+
+
+	<delete id="delete">
+		delete from t_exam_paper where exam_paper_id = #{id}
+	</delete>
+
+
+</mapper>

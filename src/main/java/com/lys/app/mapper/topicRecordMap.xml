@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lys.app.dao.TopicRecordDao">
+
+
+	<update id="createTable">
+        create table if not exists topic_record(
+            topic_record_user_id varchar(48),
+            topic_record_topic_id varchar(48),
+            topic_record_fav int default 0,
+            topic_record_result int default 0,
+            topic_record_time bigint default 0,
+            topic_record_ts timestamp)
+    </update>
+
+
+	<resultMap id="topicRecordResultMap" type="sTopicRecord">
+		<id property="userId" column="topic_record_user_id"/>
+		<id property="topicId" column="topic_record_topic_id"/>
+		<result property="fav" column="topic_record_fav"/>
+		<result property="result" column="topic_record_result"/>
+		<result property="time" column="topic_record_time"/>
+	</resultMap>
+
+
+	<select id="get" resultMap="topicRecordResultMap">
+        select * from topic_record
+        where topic_record_user_id = #{userId} and topic_record_topic_id = #{topicId}
+    </select>
+
+
+	<select id="getList" resultMap="topicRecordResultMap">
+		select * from topic_record
+
+		where topic_record_user_id = #{userId}
+
+		<choose>
+			<when test="type == 1">
+				and topic_record_fav = 1
+			</when>
+			<when test="type == 2">
+				and topic_record_result != 0
+			</when>
+			<when test="type == 3">
+				and topic_record_result = 1
+			</when>
+		</choose>
+
+		<if test="time > 0">
+			<choose>
+				<when test="prev">
+					and topic_record_time > #{time}
+				</when>
+				<otherwise>
+					and topic_record_time &lt; #{time}
+				</otherwise>
+			</choose>
+		</if>
+		<choose>
+			<when test="prev">
+				order by topic_record_time asc
+			</when>
+			<otherwise>
+				order by topic_record_time desc
+			</otherwise>
+		</choose>
+
+		<if test="pageSize > 0">
+			limit 0, #{pageSize}
+		</if>
+
+	</select>
+
+
+	<insert id="insert">
+        insert into topic_record(
+            topic_record_user_id,
+            topic_record_topic_id,
+            topic_record_fav,
+            topic_record_result,
+            topic_record_time)
+        value(
+            #{userId},
+            #{topicId},
+            #{fav},
+            #{result},
+            #{time})
+    </insert>
+
+
+	<update id="update">
+		update topic_record
+		<set>
+			topic_record_fav=#{fav},
+			topic_record_result=#{result},
+			topic_record_time=#{time}
+		</set>
+		where topic_record_user_id = #{userId} and topic_record_topic_id = #{topicId}
+	</update>
+
+
+	<delete id="delete">
+		delete from topic_record where topic_record_user_id = #{userId} and topic_record_topic_id = #{topicId}
+	</delete>
+
+
+</mapper>

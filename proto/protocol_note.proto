@@ -1,0 +1,26 @@
+option java_package = "com.lys.protobuf";
+
+// import "protocol_common.proto";
+
+message NotePage
+{
+	optional string pageDir = 1;
+	optional string title = 2;
+	optional int32 subject = 3;
+}
+
+message NotePageSet
+{
+	repeated NotePage pages = 1;
+}
+
+message NoteBook
+{
+	optional string bookDir = 1;
+	optional string name = 2;
+}
+
+message NoteBookSet
+{
+	repeated NoteBook books = 1;
+}

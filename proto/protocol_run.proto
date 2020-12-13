@@ -1,0 +1,116 @@
+option java_package = "com.lys.protobuf";
+
+
+
+
+// ---------------------- 获取服务器运行日志 --------------------------
+message Request_GetServerLog
+{
+}
+
+message Response_GetServerLog
+{
+	repeated string logs = 1;
+}
+
+
+
+message RequestRecord
+{
+	optional int64 entryTime = 1;
+	optional int64 readyTime = 2;
+	optional int64 startProcessTime = 3;
+	optional int64 overProcessTime = 4;
+	optional int32 handleId = 5;
+	optional string handleName = 6;
+}
+
+message ServerState
+{
+	optional int64 startTime = 1;
+	optional bool stop = 2;
+	repeated RequestRecord requestRecords = 3;
+}
+
+
+
+// ---------------------- 获取服务器运行状态 --------------------------
+message Request_GetServerState
+{
+}
+
+message Response_GetServerState
+{
+	optional ServerState serverState = 1;
+}
+
+
+
+// ---------------------- xxxx --------------------------
+message Request_SetServerState
+{
+	optional bool stop = 1;
+}
+
+message Response_SetServerState
+{
+	optional bool stop = 1;
+}
+
+
+
+
+
+
+message TimeRecord
+{
+	optional int64 startTime = 1;
+	optional int64 startProcessTime = 2;
+	optional int64 overProcessTime = 3;
+	optional string des = 4;
+}
+
+
+
+
+// ---------------------- xxxx --------------------------
+message Request_GetTimeRecord
+{
+}
+
+message Response_GetTimeRecord
+{
+	repeated TimeRecord timeRecords = 1;
+}
+
+
+
+
+
+message ServerUploading
+{
+	optional string path = 1;
+	optional int64 startTime = 2;
+}
+
+
+message ServerUpload
+{
+	optional string path = 1;
+	optional int64 startTime = 2;
+	optional int64 endTime = 3;
+	optional int64 fileSize = 4;
+	optional bool result = 5;
+}
+
+
+// ---------------------- 获取服务器正在上传列表 --------------------------
+message Request_GetServerUploadingList
+{
+}
+
+message Response_GetServerUploadingList
+{
+	repeated ServerUploading uploadingList = 1;
+	repeated ServerUpload uploadList = 2;
+}

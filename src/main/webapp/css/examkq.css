@@ -1,0 +1,28 @@
+
+body {
+    background-color: #eeeeee;
+}
+
+
+div.head-container {
+    /*background-color: white;*/
+    border-radius: 0px;
+    padding: 5px;
+    margin-top: 0px;
+    margin-bottom: 20px;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+
+div.part-container {
+    position: relative;
+    background-color: white;
+    border-radius: 5px;
+    padding: 20px;
+    margin-top: 0px;
+    margin-bottom: 20px;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
